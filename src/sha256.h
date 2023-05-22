@@ -1,22 +1,23 @@
+
 /*********************************************************************
-* Filename:   sha1.h
+* Filename:   sha256.h
 * Author:     Brad Conte (brad AT bradconte.com)
 * Copyright:
 * Disclaimer: This code is presented "as is" without any guarantees.
 * Details:    Defines the API for the corresponding SHA1 implementation.
 *********************************************************************/
 
-#ifndef SHA1_H
-#define SHA1_H
+#ifndef SHA256_H
+#define SHA256_H
 
 /*************************** HEADER FILES ***************************/
 #include <stddef.h>
 #include <stdint.h>
 
 /****************************** MACROS ******************************/
-#define SHA1_BLOCK_SIZE 20              // SHA1 outputs a 20 byte digest
-#define SHA1_BATCH_SIZE 1024            // batch size for file hashing
-#define SHA1_STRLEN 	40				// hex-string length.
+#define SHA256_BLOCK_SIZE 32            // SHA256 outputs a 32 byte digest
+#define SHA256_BATCH_SIZE 65536			// Adding batch size for file hashing.
+#define SHA256_STRLEN 64				// hex-string length on output.
 
 /**************************** DATA TYPES ****************************/
 #if !defined(HASH_TYPES)
@@ -29,14 +30,13 @@ typedef struct {
 	BYTE data[64];
 	WORD datalen;
 	unsigned long long bitlen;
-	WORD state[5];
-	WORD k[4];
-} SHA1_CTX;
+	WORD state[8];
+} SHA256_CTX;
 
 /*********************** FUNCTION DECLARATIONS **********************/
-void sha1_init(SHA1_CTX *ctx);
-void sha1_update(SHA1_CTX *ctx, const BYTE data[], size_t len);
-void sha1_final(SHA1_CTX *ctx, BYTE hash[]);
-char* sha1_file(const char* filename);
+void sha256_init(SHA256_CTX *ctx);
+void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len);
+void sha256_final(SHA256_CTX *ctx, BYTE hash[]);
+char* sha256_file(const char* filename);
 
-#endif   // SHA1_H
+#endif   // SHA256_H

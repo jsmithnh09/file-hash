@@ -15,7 +15,7 @@
 
 /****************************** MACROS ******************************/
 #define MD5_BLOCK_SIZE 16               // MD5 outputs a 16 byte digest
-#define MD5_BATCH_SIZE 1024             // file batching for hashing.
+#define MD5_BATCH_SIZE 65536            // file batching for hashing.
 #define MD5_STRLEN     32               // hex-string length.
 
 /**************************** DATA TYPES ****************************/

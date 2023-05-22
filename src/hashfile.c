@@ -32,12 +32,14 @@ int main(int argc, char *argv[]) {
         } else if (!strcmpi(argv[2], "crc32")) {
             printf("CRC32 : ");
             output =  crc32_file(argv[1]);
-        }
         } else {
             printf("SHA256: ");
             output = sha256_file(argv[1]);
         }
+    } else {
+        printf("SHA256: ");
+        output = sha256_file(argv[1]);
+    }
     printf("%s: %s\n", argv[1], output);
-    free(output);
     return 0;
 }
