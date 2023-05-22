@@ -4,7 +4,8 @@
 * Copyright:
 * Disclaimer: This code is presented "as is" without any guarantees.
 * Details:    Implementation of the CRC32 checksum algorithm.
-				  This implementation uses little endian byte order.
+				  Algorithm specification can be found here: 
+                  https://pubs.opengroup.org/onlinepubs/9699919799/utilities/cksum.html
 *********************************************************************/
 
 

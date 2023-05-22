@@ -12,7 +12,7 @@ To test, if on Windows, you can use `Get-FileHash <filename> -Algorithm <algo>` 
 the hash function and confirm the resulting hash strings match. Thus far, SHA1, SHA256, and MD5
 have been confirmed to match, (21-May-2023.)
 
-Using python3, the following can be used as well:
+Using `python3`, the following can be used as well:
 ```python
 import zlib
 def crcfile(filename: str, batch_size: int = 1024) -> str:
@@ -31,4 +31,4 @@ To build, run the following, (assuming `mingw` or `gcc` are installed):
 ```
 gcc -I .\ -o hashfile.exe hashfile.c md5.c md5.h sha1.c sha1.h sha256.c crc32.c crc32.h sha256.h
 ```
-For buliding with MEX, exclude hashfile.c and compile `mfilehash.c` to get the MATLAB API working.
+For buliding with MEX, exclude hashfile.c and compile `mex_mfilehash.c` to get the MATLAB API working.
