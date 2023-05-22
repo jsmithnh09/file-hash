@@ -1,4 +1,4 @@
-# HASHFILE
+# File-hash
 
 ## About
 This is based on the work by Brad Conte with no cross-licensing, available at
