@@ -12,6 +12,20 @@ To test, if on Windows, you can use `Get-FileHash <filename> -Algorithm <algo>` 
 the hash function and confirm the resulting hash strings match. Thus far, SHA1, SHA256, and MD5
 have been confirmed to match, (21-May-2023.)
 
+Using python3, the following can be used as well:
+```python
+import zlib
+def crcfile(filename: str, batch_size: int = 1024) -> str:
+    with open(filename, "rb") as fid:
+        hash = 0
+        while True:
+            data = fid.read(batch_size)
+            if not data:
+                break
+            hash = zlib.crc32(data, hash)
+        return "08x" % (hash & 0xFFFFFFFF)
+```
+
 ## Building
 To build, run the following, (assuming `mingw` or `gcc` are installed):
 ```
