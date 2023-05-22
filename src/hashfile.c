@@ -41,5 +41,6 @@ int main(int argc, char *argv[]) {
         output = sha256_file(argv[1]);
     }
     printf("%s: %s\n", argv[1], output);
+    free(output);
     return 0;
 }
