@@ -3,9 +3,11 @@
 #include "sha1.h"
 #include "md5.h"
 #include "sha256.h"
+#include <string.h>
+#include <stdio.h>
 
 /* MEX API to use the hashing capabilities. */
-void mexFunction(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[])
+void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
     if (nlhs != 1) {
         mexErrMsgIdAndTxt("mfilehash:BadOutput", "Expected a string output.");
@@ -18,34 +20,38 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, mxArray *prhs[])
     }
 
     // pull the filename, algorithm, and output.
-    char *fname, *algo, *hash;
-    mxChar *mxdata;
-    int dims[];
+    char *fname, *algo, *hash, *outbuf;
+    size_t buflen;
     fname = mxArrayToString(prhs[0]);
     algo = mxArrayToString(prhs[1]);
 
     // determine which algorithm to use for what hash/checksum.
-    if (!strncmpi(algo, "md5", 3)) {
+    if (!strcmpi(algo, "md5")) {
         hash = md5_file(fname);
-        dims = {1, MD5_STRLEN};
-    } else if (!strncmpi(algo, "sha256", 6)) {
+        buflen = (size_t)MD5_STRLEN;
+    } else if (!strcmpi(algo, "sha256")) {
         hash = sha256_file(fname);
-        dims = {1, SHA256_STRLEN};
-    } else if (!strncmpi(algo, "sha1", 4)) {
+        buflen = (size_t)SHA256_STRLEN;
+    } else if (!strcmpi(algo, "sha1")) {
         hash = sha1_file(fname);
-        dims = {1, SHA1_STRLEN};
-    } else if (!strncmpi(algo, "crc32", 5)) {
+        buflen = (size_t)SHA1_STRLEN;
+    } else if (!strcmpi(algo, "crc32")) {
         hash = crc32_file(fname);
-        dims = {1, CRC32_STRLEN};
+        buflen = (size_t)CRC32_STRLEN;
     } else {
         hash = sha256_file(fname);
-        dims = {1, SHA256_STRLEN};
+        buflen = (size_t)SHA256_STRLEN;
     }
 
-    // output the hash.
-    plhs[0] = mxCreateCharArray(2, (const int *)dims);
-    mxdata = (mxChar *)mxGetData(plhs[0]);
-    memcpy(mxdata, hash, dims[1] * sizeof(char));
+    // output the hash and free C-style memory.
+    outbuf = mxCalloc(buflen+1, sizeof(char));
+    int idx;
+    for (idx = 0; idx < buflen; idx++) {
+        outbuf[idx] = hash[idx];   
+    }
+    outbuf[buflen] = '\0'; // null-terminating.
+    plhs[0] = mxCreateString(outbuf);
+    free(hash);
 
 
 }
