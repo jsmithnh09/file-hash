@@ -17,6 +17,7 @@
 /****************************** MACROS ******************************/
 #define SHA256_BLOCK_SIZE 32            // SHA256 outputs a 32 byte digest
 #define SHA256_BATCH_SIZE 1024 			// Adding batch size for file hashing.
+#define SHA256_STRLEN 64				// hex-string length on output.
 
 /**************************** DATA TYPES ****************************/
 #if !defined(HASH_TYPES)
