@@ -197,7 +197,7 @@ char* md5_file(const char* filename)
     int ind, bytes; // keeps track of size of each byte read.
     MD5_CTX ctx;
     unsigned char data[MD5_BATCH_SIZE]; // buffer for each file-read call.
-    char *fileprint = (char*)malloc(MD5_BLOCK_SIZE+1 * sizeof(char));
+    char *fileprint = (char*)calloc((MD5_BLOCK_SIZE*2)+1, sizeof(char));
     FILE *fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
