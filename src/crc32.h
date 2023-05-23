@@ -14,7 +14,7 @@
 #include <stddef.h>
 #include <stdint.h>
 /****************************** MACROS ******************************/
-#define CRC32_BLOCK_SIZE    8
+#define CRC32_BLOCK_SIZE    4
 #define CRC32_BATCH_SIZE    65536
 #define CRC32_INITIAL       0xFFFFFFFF
 #define CRC32_POLY          0xEDB88320         /* p(x) reflected, with x^32 implied */
