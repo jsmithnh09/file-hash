@@ -68,6 +68,8 @@ static const WORD crc32_table[256] = { /* CRC polynomial 0xedb88320 */
 0xb40bbe37, 0xc30c8ea1, 0x5a05df1b, 0x2d02ef8d
 };
 
+static FILE* fid;
+
 /*********************** FUNCTION DEFINITIONS ***********************/
 void crc32_init(CRC32_CTX *ctx)
 {
@@ -87,17 +89,30 @@ void crc32_final(CRC32_CTX *ctx)
     ctx->state = ctx->state ^ 0xFFFFFFFF;
 }
 
+void crc32_closefile(void)
+{
+    fclose(fid);
+}
+
 char* crc32_file(const char* filename)
 {
-    int bytes;
+    int bytes, err;
     CRC32_CTX ctx;
     unsigned char data[CRC32_BATCH_SIZE];
     char* fileprint = (char*)malloc((CRC32_BLOCK_SIZE*2)+1 * sizeof(char));
-    FILE *fid = fopen(filename, "rb");
+    fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
         return 0;
     }
+    err = atexit(crc32_closefile);
+	if (err != 0)
+	{
+		fclose(fid);
+		printf("CRC32: Unable to register file handler at-exit method.\n");
+		exit(1);
+	}
+
     // initialize the checksum.
     crc32_init(&ctx);
     while((bytes = fread(data, 1, CRC32_BATCH_SIZE, fid)) != 0)
