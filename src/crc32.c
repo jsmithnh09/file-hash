@@ -92,7 +92,7 @@ char* crc32_file(const char* filename)
     int bytes;
     CRC32_CTX ctx;
     unsigned char data[CRC32_BATCH_SIZE];
-    char* fileprint = (char*)malloc(CRC32_BLOCK_SIZE+1 * sizeof(char));
+    char* fileprint = (char*)malloc((CRC32_BLOCK_SIZE*2)+1 * sizeof(char));
     FILE *fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
