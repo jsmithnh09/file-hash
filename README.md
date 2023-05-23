@@ -6,6 +6,8 @@ This is based on the work by Brad Conte with no cross-licensing, available at
 cryptography source files, I've added a `<algorithm>_file` function signature for reading
 in a filestream and computing the checksum. Although not necessarily a "hash" algorithm,
 I've added an implementation of CRC32 where the polynomial table is pre-defined for 32-bit words.
+For cleanup, I've added `atexit` methods in the event the hashing is interrupted to prevent open
+file handlers on abnormal termination.
 
 ## Testing
 To run MATLAB tests, the `test_filehash.m` class can be used as a test case alongside the `file_hash.py`
