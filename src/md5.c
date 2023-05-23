@@ -34,6 +34,9 @@
 #define II(a,b,c,d,m,s,t) { a += I(b,c,d) + m + t; \
                             a = b + ROTLEFT(a,s); }
 
+/**************************** VARIABLES *****************************/
+static FILE* fid;
+
 /*********************** FUNCTION DEFINITIONS ***********************/
 void md5_transform(MD5_CTX *ctx, const BYTE data[])
 {
@@ -191,18 +194,30 @@ void md5_final(MD5_CTX *ctx, BYTE hash[])
 	}
 }
 
+void md5_closefile(void)
+{
+	fclose(fid);
+}
+
 char* md5_file(const char* filename) 
 {
     unsigned char buffer[MD5_BLOCK_SIZE]; // final checksum container.
-    int ind, bytes; // keeps track of size of each byte read.
+    int ind, bytes, err; // keeps track of size of each byte read.
     MD5_CTX ctx;
     unsigned char data[MD5_BATCH_SIZE]; // buffer for each file-read call.
     char *fileprint = (char*)calloc((MD5_BLOCK_SIZE*2)+1, sizeof(char));
-    FILE *fid = fopen(filename, "rb");
+    fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
         return 0;
     }
+	err = atexit(md5_closefile);
+	if (err != 0)
+	{
+		fclose(fid);
+		printf("MD5: Unable to register file handler at-exit method.\n");
+		exit(1);
+	}
     // initialize the checksum state and keep reading bytes from the file.
     md5_init(&ctx);
     while((bytes = fread(data, 1, MD5_BATCH_SIZE, fid)) != 0) 
