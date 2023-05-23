@@ -42,6 +42,8 @@ static const WORD k[64] = {
 	0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2
 };
 
+static FILE* fid;
+
 /*********************** FUNCTION DEFINITIONS ***********************/
 void sha256_transform(SHA256_CTX *ctx, const BYTE data[])
 {
@@ -159,18 +161,29 @@ void sha256_final(SHA256_CTX *ctx, BYTE hash[])
 	}
 }
 
+void sha256_closefile(void)
+{
+	fclose(fid);
+}
+
 char* sha256_file(const char *filename) 
 {
     unsigned char buffer[SHA256_BLOCK_SIZE]; // final checksum container.
-    int ind, bytes; // keeps track of size of each byte read.
+    int ind, bytes, err; // keeps track of size of each byte read.
     SHA256_CTX ctx;
     unsigned char data[SHA256_BATCH_SIZE]; // buffer for each file-read call.
     char *fileprint = (char*)calloc((SHA256_BLOCK_SIZE*2)+1, sizeof(char));
-    FILE *fid = fopen(filename, "rb");
+    fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
         return 0;
     }
+	err = atexit(sha256_closefile);
+	if (err != 0) {
+		fclose(fid);
+		printf("SHA256: Unable to register file handler at-exit method.\n");
+		exit(1);
+	}
     // initialize the checksum state and keep reading bytes from the file.
     sha256_init(&ctx);
     while((bytes = fread(data, 1, SHA256_BATCH_SIZE, fid)) != 0) {
