@@ -19,6 +19,9 @@
 /****************************** MACROS ******************************/
 #define ROTLEFT(a, b) ((a << b) | (a >> (32 - b)))
 
+/**************************** VARIABLES *****************************/
+static FILE* fid;
+
 /*********************** FUNCTION DEFINITIONS ***********************/
 void sha1_transform(SHA1_CTX *ctx, const BYTE data[])
 {
@@ -150,18 +153,30 @@ void sha1_final(SHA1_CTX *ctx, BYTE hash[])
 	}
 }
 
+void sha1_closefile(void)
+{
+	fclose(fid);
+}
+
 char* sha1_file(const char* filename) 
 {
     unsigned char buffer[SHA1_BLOCK_SIZE]; // final checksum container.
-    int ind, bytes; // keeps track of size of each byte read.
+    int ind, bytes, err; // keeps track of size of each byte read.
     SHA1_CTX ctx;
     unsigned char data[SHA1_BATCH_SIZE]; // buffer for each file-read call.
     char *fileprint = (char*)calloc((SHA1_BLOCK_SIZE*2)+1, sizeof(char));
-    FILE *fid = fopen(filename, "rb");
+    fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
         return 0;
     }
+	err = atexit(sha1_closefile);
+	if (err != 0)
+	{
+		fclose(fid);
+		printf("SHA1: Unable to register file handler at-exit method.\n");
+		exit(1);
+	}
     // initialize the checksum state and keep reading bytes from the file.
     sha1_init(&ctx);
     while((bytes = fread(data, 1, SHA1_BATCH_SIZE, fid)) != 0) {
