@@ -10,7 +10,7 @@ function hash = mfilehash(infile, algo)
 %
 % See Also: PRIVATE_MFILEHASH
 
-if (exist(infile, 'file') ~= 2)
+if (~isfile(infile))
     error('Input FILE does not exist.');
 elseif (nargin < 2)
     algo = 'sha256';
