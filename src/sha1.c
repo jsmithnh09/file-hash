@@ -193,3 +193,27 @@ char* sha1_file(const char* filename)
     fclose(fid);
     return fileprint;
 }
+
+char* sha1_file_quick(const char* filename, BYTE quick)
+{
+	off_t fsize = get_filesize(filename);
+	if ((!quick) || (FILE_IS_SMALL(fsize)))
+	{
+		return sha1_file(filename);
+	}
+	unsigned char buffer[SHA1_BLOCK_SIZE];
+	char *fileprint = (char*)calloc(SHA1_STRLEN+1, sizeof(char));
+    size_t numbytes;
+    BYTE *data = data_chunks(filename, &numbytes);
+    SHA1_CTX ctx;
+	sha1_init(&ctx);
+	sha1_update(&ctx, data, numbytes);
+	sha1_final(&ctx, buffer);
+	for(int ind = 0; ind < SHA1_BLOCK_SIZE; ind++)
+	{
+		sprintf(&fileprint[ind*2], "%02x", (unsigned int)buffer[ind]);
+	}
+	free(data);
+	return fileprint;
+
+}
