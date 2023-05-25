@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <errno.h>
 
 /****************************** MACROS ******************************/
 #define BYTE_BATCH_SIZE     2048   //  2048 bytes = 64 KB.
@@ -33,6 +34,6 @@
 
 /*********************** FUNCTION DECLARATIONS **********************/
 BYTE* data_chunks(const char* filename, size_t *len);
-off_t file_size(const char *filename);
+off_t get_filesize(const char *filename);
 
 #endif
