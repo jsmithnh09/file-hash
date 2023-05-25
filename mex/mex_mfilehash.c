@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 
+// MinGW GNU Compiler will work with the stat interface when compiling. VS2017+ will not.
+
 /* MEX API to use the hashing capabilities. */
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
@@ -17,6 +19,18 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
         mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "First input must be a filepath.");
     } else if (!mxIsChar(prhs[1])) {
         mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "Second input must indicate a hash algorithm.");
+    }
+    
+    // check if a logical "True" was specified for quick-hashing a large file.
+    BYTE quick = 0;
+    if (nrhs == 3)
+    {
+        if (!mxIsLogical(prhs[2]))
+        {
+            mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "Input QUICKFLAG must be logical.");
+        } else {
+            quick = (*(BYTE *)mxGetLogicals(prhs[2]) == 1);
+        }
     }
 
     // pull the filename, algorithm, and output.
