@@ -205,11 +205,11 @@ char* md5_file(const char* filename)
     int ind, bytes, err; // keeps track of size of each byte read.
     MD5_CTX ctx;
     unsigned char data[MD5_BATCH_SIZE]; // buffer for each file-read call.
-    char *fileprint = (char*)calloc((MD5_BLOCK_SIZE*2)+1, sizeof(char));
+    char *fileprint = (char*)calloc((MD5_STRLEN)+1, sizeof(char));
     fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
-        return 0;
+        exit(1);
     }
 	err = atexit(md5_closefile);
 	if (err != 0)

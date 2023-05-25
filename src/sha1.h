@@ -15,7 +15,7 @@
 
 /****************************** MACROS ******************************/
 #define SHA1_BLOCK_SIZE 20              // SHA1 outputs a 20 byte digest
-#define SHA1_BATCH_SIZE 65536           // batch size for file hashing
+#define SHA1_BATCH_SIZE 2048           // batch size for file hashing
 #define SHA1_STRLEN 	40				// hex-string length.
 
 /**************************** DATA TYPES ****************************/

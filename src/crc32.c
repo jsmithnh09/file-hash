@@ -99,11 +99,11 @@ char* crc32_file(const char* filename)
     int bytes, err;
     CRC32_CTX ctx;
     unsigned char data[CRC32_BATCH_SIZE];
-    char* fileprint = (char*)malloc((CRC32_BLOCK_SIZE*2)+1 * sizeof(char));
+    char* fileprint = (char*)calloc((CRC32_STRLEN)+1, sizeof(char));
     fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
-        return 0;
+        exit(1);
     }
     err = atexit(crc32_closefile);
 	if (err != 0)

@@ -164,11 +164,11 @@ char* sha1_file(const char* filename)
     int ind, bytes, err; // keeps track of size of each byte read.
     SHA1_CTX ctx;
     unsigned char data[SHA1_BATCH_SIZE]; // buffer for each file-read call.
-    char *fileprint = (char*)calloc((SHA1_BLOCK_SIZE*2)+1, sizeof(char));
+    char *fileprint = (char*)calloc((SHA1_STRLEN)+1, sizeof(char));
     fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
-        return 0;
+        exit(1);
     }
 	err = atexit(sha1_closefile);
 	if (err != 0)
