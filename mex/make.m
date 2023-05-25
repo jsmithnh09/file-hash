@@ -6,7 +6,7 @@ function make
 target = 'mex_mfilehash.c';
 rootdir = fileparts(fileparts(mfilename('fullpath')));
 srcdir = fullfile(rootdir, 'src');
-files = {'sha256.c', 'md5.c', 'crc32.c', 'sha1.c'};
+files = {'sha256.c', 'md5.c', 'crc32.c', 'sha1.c', 'common.c'};
 
 % expand the filepath for each source file.
 for fIdx = 1:numel(files)

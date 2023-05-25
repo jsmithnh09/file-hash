@@ -7,25 +7,17 @@
 * Details:    Defines the API for the corresponding SHA1 implementation.
 *********************************************************************/
 
-#ifndef SHA256_H
-#define SHA256_H
+#ifndef __SHA256_H__
+#define __SHA256_H__
 
 /*************************** HEADER FILES ***************************/
-#include <stddef.h>
-#include <stdint.h>
+#include "common.h"
 
 /****************************** MACROS ******************************/
-#define SHA256_BLOCK_SIZE 32            // SHA256 outputs a 32 byte digest
-#define SHA256_BATCH_SIZE 2048			// Adding batch size for file hashing.
-#define SHA256_STRLEN 64				// hex-string length on output.
+#define SHA256_BLOCK_SIZE 	32            // SHA256 outputs a 32 byte digest
+#define SHA256_STRLEN 		  64			      // hex-string length on output.
 
 /**************************** DATA TYPES ****************************/
-#if !defined(HASH_TYPES)
-typedef uint8_t   BYTE;             // 8-bit byte
-typedef uint32_t  WORD;             // 32-bit word, change to "long" for 16-bit machines
-#define HASH_TYPES
-#endif
-
 typedef struct {
 	BYTE data[64];
 	WORD datalen;
@@ -38,6 +30,7 @@ void sha256_init(SHA256_CTX *ctx);
 void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len);
 void sha256_final(SHA256_CTX *ctx, BYTE hash[]);
 char* sha256_file(const char* filename);
+char* sha256_file_quick(const char* filename, BYTE quick);
 void sha256_closefile(void);
 
 #endif   // SHA256_H
