@@ -30,6 +30,7 @@ void crc32_init(CRC32_CTX *ctx);
 void crc32_update(CRC32_CTX *ctx, const BYTE data[], size_t len);
 void crc32_final(CRC32_CTX *ctx);
 char* crc32_file(const char* filename);
+char* crc32_file_quick(const char* filename, BYTE quick);
 void crc32_closefile(void);
 
 
