@@ -9,7 +9,7 @@ COMPILE = $(CC) $(CFLAGS)
 all: hashfile
 
 hashfile: $(SRC_DIR)/hashfile.c $(OBJS)
-	$(COMPILE) -c $(SRC_DIR)/hashfile.c -o hashfile
+	$(COMPILE) $(OBJS) $(SRC_DIR)/hashfile.c -o hashfile.exe
 
 $(BUILD_DIR)/sha256.o: $(SRC_DIR)/sha256.c $(SRC_DIR)/sha256.h
 	$(COMPILE) -c $(SRC_DIR)/sha256.c -o $(BUILD_DIR)/sha256.o
