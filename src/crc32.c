@@ -98,12 +98,13 @@ char* crc32_file(const char* filename)
 {
     int bytes, err;
     CRC32_CTX ctx;
-    unsigned char data[CRC32_BATCH_SIZE];
-    char* fileprint = (char*)malloc((CRC32_BLOCK_SIZE*2)+1 * sizeof(char));
+    unsigned char data[BYTE_BATCH_SIZE];
+    char* fileprint = (char*)calloc((CRC32_STRLEN)+1, sizeof(char));
     fid = fopen(filename, "rb");
-    if (fid == NULL) {
+    if (fid == NULL) 
+    {
         perror(filename);
-        return 0;
+        exit(1);
     }
     err = atexit(crc32_closefile);
 	if (err != 0)
@@ -115,7 +116,7 @@ char* crc32_file(const char* filename)
 
     // initialize the checksum.
     crc32_init(&ctx);
-    while((bytes = fread(data, 1, CRC32_BATCH_SIZE, fid)) != 0)
+    while((bytes = fread(data, 1, BYTE_BATCH_SIZE, fid)) != 0)
     {
         crc32_update(&ctx, data, bytes);
     }

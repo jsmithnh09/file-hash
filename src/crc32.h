@@ -7,26 +7,19 @@
 				  This implementation uses little endian byte order.
 *********************************************************************/
 
-#ifndef CRC32H
-#define CRC32H
+#ifndef __CRC32_H__
+#define __CRC32_H__
 
 /*************************** HEADER FILES ***************************/
-#include <stddef.h>
-#include <stdint.h>
+#include "common.h"
+
 /****************************** MACROS ******************************/
 #define CRC32_BLOCK_SIZE    4
-#define CRC32_BATCH_SIZE    65536
 #define CRC32_INITIAL       0xFFFFFFFF
 #define CRC32_POLY          0xEDB88320         /* p(x) reflected, with x^32 implied */
 #define CRC32_STRLEN        8
 
 /**************************** DATA TYPES ****************************/
-#if !defined(HASH_TYPES)
-typedef uint8_t   BYTE; // 8-bit byte.
-typedef uint32_t  WORD; // 32-bit word, single checksum.
-#define HASH_TYPES
-#endif
-
 typedef struct {
     BYTE table[256];
     WORD state;

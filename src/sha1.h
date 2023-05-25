@@ -6,25 +6,17 @@
 * Details:    Defines the API for the corresponding SHA1 implementation.
 *********************************************************************/
 
-#ifndef SHA1_H
-#define SHA1_H
+#ifndef __SHA1_H__
+#define __SHA1_H__
 
 /*************************** HEADER FILES ***************************/
-#include <stddef.h>
-#include <stdint.h>
+#include "common.h"
 
 /****************************** MACROS ******************************/
 #define SHA1_BLOCK_SIZE 20              // SHA1 outputs a 20 byte digest
-#define SHA1_BATCH_SIZE 65536           // batch size for file hashing
 #define SHA1_STRLEN 	40				// hex-string length.
 
 /**************************** DATA TYPES ****************************/
-#if !defined(HASH_TYPES)
-typedef uint8_t   BYTE;             // 8-bit byte
-typedef uint32_t  WORD;             // 32-bit word, change to "long" for 16-bit machines
-#define HASH_TYPES
-#endif
-
 typedef struct {
 	BYTE data[64];
 	WORD datalen;

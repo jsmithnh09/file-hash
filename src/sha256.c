@@ -171,12 +171,12 @@ char* sha256_file(const char *filename)
     unsigned char buffer[SHA256_BLOCK_SIZE]; // final checksum container.
     int ind, bytes, err; // keeps track of size of each byte read.
     SHA256_CTX ctx;
-    unsigned char data[SHA256_BATCH_SIZE]; // buffer for each file-read call.
-    char *fileprint = (char*)calloc((SHA256_BLOCK_SIZE*2)+1, sizeof(char));
+    unsigned char data[BYTE_BATCH_SIZE]; // buffer for each file-read call.
+    char *fileprint = (char*)calloc((SHA256_STRLEN)+1, sizeof(char));
     fid = fopen(filename, "rb");
     if (fid == NULL) {
         perror(filename);
-        return 0;
+        exit(1);
     }
 	err = atexit(sha256_closefile);
 	if (err != 0) {
@@ -186,7 +186,7 @@ char* sha256_file(const char *filename)
 	}
     // initialize the checksum state and keep reading bytes from the file.
     sha256_init(&ctx);
-    while((bytes = fread(data, 1, SHA256_BATCH_SIZE, fid)) != 0) {
+    while((bytes = fread(data, 1, BYTE_BATCH_SIZE, fid)) != 0) {
         sha256_update(&ctx, data, bytes);
     }
 
