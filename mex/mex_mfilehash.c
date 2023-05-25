@@ -3,6 +3,7 @@
 #include "sha1.h"
 #include "md5.h"
 #include "sha256.h"
+#include "common.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -11,14 +12,18 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
     if (nlhs != 1) {
         mexErrMsgIdAndTxt("mfilehash:BadOutput", "Expected a string output.");
-    } else if (nrhs != 2) {
+    } else if (nrhs < 2) {
         mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "Two input arguments were expected.");
     } else if (!mxIsChar(prhs[0])) {
         mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "First input must be a filepath.");
     } else if (!mxIsChar(prhs[1])) {
         mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "Second input must indicate a hash algorithm.");
     }
-
+    BYTE quick = 0;
+    if (nrhs == 3)
+    {
+        quick = 1;
+    }
     // pull the filename, algorithm, and output.
     char *fname, *algo, *hash, *outbuf;
     size_t buflen;
@@ -27,19 +32,19 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 
     // determine which algorithm to use for what hash/checksum.
     if (!strcmpi(algo, "md5")) {
-        hash = md5_file(fname);
+        hash = md5_file_quick(fname, quick);
         buflen = (size_t)MD5_STRLEN;
     } else if (!strcmpi(algo, "sha256")) {
-        hash = sha256_file(fname);
+        hash = sha256_file_quick(fname, quick);
         buflen = (size_t)SHA256_STRLEN;
     } else if (!strcmpi(algo, "sha1")) {
-        hash = sha1_file(fname);
+        hash = sha1_file_quick(fname, quick);
         buflen = (size_t)SHA1_STRLEN;
     } else if (!strcmpi(algo, "crc32")) {
-        hash = crc32_file(fname);
+        hash = crc32_file_quick(fname, quick);
         buflen = (size_t)CRC32_STRLEN;
     } else {
-        hash = sha256_file(fname);
+        hash = sha256_file_quick(fname, quick);
         buflen = (size_t)SHA256_STRLEN;
     }
 
