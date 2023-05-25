@@ -29,7 +29,7 @@ switch nargin
 end
 if (~isfile(infile))
     error('Input FILE does not exist.');
-elsif (~ismember(algo, {'crc32', 'sha1', 'sha256', 'md5'}))
+elseif (~ismember(algo, {'crc32', 'sha1', 'sha256', 'md5'}))
     error('Input ALGO does not match any known HASH/CHECKSUM.');
 end
 hash = mex_mfilehash(infile, lower(algo), logical(quick));
