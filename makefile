@@ -9,7 +9,7 @@ COMMONS = $(SRC_DIR)/common.c $(SRC_DIR)/common.h
 all: hashfile
 
 hashfile: $(SRC_DIR)/hashfile.c $(OBJS)
-	$(COMPILE) -c $(SRC_DIR)/hashfile.c -o hashfile
+	$(COMPILE) $(SRC_DIR)/hashfile.c -o hashfile
 
 $(BUILD_DIR)/sha256.o: $(SRC_DIR)/sha256.c $(SRC_DIR)/sha256.h $(BUILD_DIR)/common.o
 	$(COMPILE) -c $(SRC_DIR)/sha256.c -o $(BUILD_DIR)/sha256.o
