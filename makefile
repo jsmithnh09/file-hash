@@ -1,7 +1,7 @@
 CC = gcc
 BUILD_DIR= ./build
 SRC_DIR = ./src
-CFLAGS = -std=c17 -Wall -O2 -I $(SRC_DIR) -D_FILE_OFFSET_BITS=64
+CFLAGS = -std=c99 -Wall -O2 -I $(SRC_DIR) -D_FILE_OFFSET_BITS=64
 OBJS = $(BUILD_DIR)/common.o $(BUILD_DIR)/sha256.o $(BUILD_DIR)/sha1.o $(BUILD_DIR)/md5.o $(BUILD_DIR)/crc32.o
 COMPILE = $(CC) $(CFLAGS)
 COMMONS = $(SRC_DIR)/common.c $(SRC_DIR)/common.h
