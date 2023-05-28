@@ -2,37 +2,37 @@ import zlib
 import sys
 import hashlib
 import json
-from os.path import abspath, join
+from os.path import abspath, join, isfile
 from os import getcwd
 
-BATCH_SIZE = 65536 # 65 kB buffersize.
+BATCH_SIZE = 16384 # 16 kB buffersize.
+HASH_METHODS = ["md5", "sha1", "sha256"]
 
-md5 = hashlib.md5()
-sha256 = hashlib.sha256()
-sha1 = hashlib.sha1()
-
-result = {"MD5": [], "SHA1": [], "SHA256": [], "CRC32": []}
+# instantiate each of the hasher objects.
+hashers = {}
+for meth in HASH_METHODS:
+    hashers[meth] = getattr(hashlib, meth)()
 
 target = abspath(join(getcwd(), "test.txt"))
 if not isfile(target):
     raise FileNotFoundError("The test file is not present. Run this in the test directory.")
 
+# read chunks of data and CRC/hash them.
 with open("test.txt", "rb") as fid:
     cksum = 0
     while True:
         data = fid.read(BATCH_SIZE)
         if not data:
             break
-        md5.update(data)
-        sha1.update(data)
-        sha256.update(data)
+        for keyiter in hashers.keys():
+            hashers[keyiter].update(data)
         cksum = zlib.crc32(data, cksum)
 
-result["MD5"] = md5.hexdigest().upper()
-result["SHA1"] = sha1.hexdigest().upper()
-result["SHA256"] = sha256.hexdigest().upper()
-result["CRC32"] = "%08x" % (hash & 0xFFFFFFFF)
+result = {}
+for key in HASH_METHODS:
+    result[key.upper()] = hashers[key].hexdigest().upper()
+result["CRC32"] = "%08X" % (cksum & 0xFFFFFFFF)
 
 with open("results.json", "w") as fid:
-    json.dump(results, fid)
+    json.dump(result, fid, indent=4)
 
