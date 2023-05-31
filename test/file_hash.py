@@ -35,4 +35,3 @@ result["CRC32"] = "%08X" % (cksum & 0xFFFFFFFF)
 
 with open("results.json", "w") as fid:
     json.dump(result, fid, indent=4)
-
