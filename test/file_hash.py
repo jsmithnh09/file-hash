@@ -1,11 +1,11 @@
 import zlib
-import sys
+import sys, random
 import hashlib
-import json
+import json, io
 from os.path import abspath, join, isfile
 from os import getcwd
 
-BATCH_SIZE = 16384 # 16 kB buffersize.
+BATCH_SIZE = 2048 # 16 kB buffersize.
 HASH_METHODS = ["md5", "sha1", "sha256"]
 
 # instantiate each of the hasher objects.
@@ -15,7 +15,8 @@ for meth in HASH_METHODS:
 
 target = abspath(join(getcwd(), "test.txt"))
 if not isfile(target):
-    raise FileNotFoundError("The test file is not present. Run this in the test directory.")
+    with open(target, "w") as fid:
+        fid.write("hello world!")
 
 # read chunks of data and CRC/hash them.
 with open("test.txt", "rb") as fid:

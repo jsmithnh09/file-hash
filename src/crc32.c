@@ -127,22 +127,3 @@ char* crc32_file(const char* filename)
     fclose(fid);
     return fileprint;
 }
-
-char* crc32_file_quick(const char* filename, BYTE quick)
-{
-    off_t fsize = get_filesize(filename);
-    if ((!quick) || (FILE_IS_SMALL(fsize)))
-    {
-        return crc32_file(filename);
-    }
-    char *fileprint = (char*)calloc(CRC32_STRLEN+1, sizeof(char));
-    size_t numbytes;
-    BYTE *data = data_chunks(filename, &numbytes);
-    CRC32_CTX ctx;
-    crc32_init(&ctx);
-    crc32_update(&ctx, data, numbytes);
-    crc32_final(&ctx);
-    sprintf(fileprint, "%08x", ctx.state);
-    free(data);
-    return fileprint;
-}

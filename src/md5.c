@@ -236,27 +236,3 @@ char* md5_file(const char* filename)
     fclose(fid);
     return fileprint;
 }
-
-char* md5_file_quick(const char* filename, BYTE quick)
-{
-	off_t fsize = get_filesize(filename);
-	if ((!quick) || (FILE_IS_SMALL(fsize)))
-	{
-		return md5_file(filename);
-	}
-	unsigned char buffer[MD5_BLOCK_SIZE];
-	char *fileprint = (char *)calloc(MD5_STRLEN+1, sizeof(char));
-    size_t numbytes;
-    BYTE *data = data_chunks(filename, &numbytes);
-    MD5_CTX ctx;
-	md5_init(&ctx);
-	md5_update(&ctx, data, numbytes);
-	md5_final(&ctx, buffer);
-	for(int ind = 0; ind < MD5_BLOCK_SIZE; ind++)
-	{
-		sprintf(&fileprint[ind*2], "%02x", (unsigned int)buffer[ind]);
-	}
-	free(data);
-	return fileprint;
-
-}

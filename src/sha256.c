@@ -200,27 +200,3 @@ char* sha256_file(const char *filename)
     fclose(fid);
     return fileprint;
 }
-
-char* sha256_file_quick(const char* filename, BYTE quick)
-{
-	off_t fsize = get_filesize(filename);
-	if ((!quick) || (FILE_IS_SMALL(fsize)))
-	{
-		return sha256_file(filename);
-	}
-	unsigned char buffer[SHA256_BLOCK_SIZE];
-	char *fileprint = (char *)calloc(SHA256_STRLEN+1, sizeof(char));
-    size_t numbytes;
-    BYTE *data = data_chunks(filename, &numbytes);
-    SHA256_CTX ctx;
-	sha256_init(&ctx);
-	sha256_update(&ctx, data, numbytes);
-	sha256_final(&ctx, buffer);
-	for(int ind = 0; ind < SHA256_BLOCK_SIZE; ind++)
-	{
-		sprintf(&fileprint[ind*2], "%02x", (unsigned int)buffer[ind]);
-	}
-	free(data);
-	return fileprint;
-
-}

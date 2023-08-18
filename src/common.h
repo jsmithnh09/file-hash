@@ -32,8 +32,4 @@
     #define HASH_TYPES
 #endif 
 
-/*********************** FUNCTION DECLARATIONS **********************/
-BYTE* data_chunks(const char* filename, size_t *len);
-off_t get_filesize(const char *filename);
-
 #endif

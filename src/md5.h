@@ -29,7 +29,6 @@ void md5_init(MD5_CTX *ctx);
 void md5_update(MD5_CTX *ctx, const BYTE data[], size_t len);
 void md5_final(MD5_CTX *ctx, BYTE hash[]);
 char* md5_file(const char* filename);
-char* md5_file_quick(const char* filename, BYTE quick);
 void md5_closefile(void);
 
 #endif   // MD5_H
