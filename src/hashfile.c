@@ -19,16 +19,16 @@
 int main(int argc, char *argv[]) {
     char *output;
     if (argc > 2) {
-        if (!strcmp(argv[2], "md5")) {
+        if (!strncmp(argv[2], "md5", 3)) {
             printf("MD5   : ");
             output = md5_file(argv[1]);
-        } else if (!strcmp(argv[2], "sha256")) {
+        } else if (!strncmp(argv[2], "sha256", 6)) {
             printf("SHA256: ");
             output = sha256_file(argv[1]);
-        } else if (!strcmp(argv[2], "sha1")) {
+        } else if (!strncmp(argv[2], "sha1", 4)) {
             printf("SHA1  : ");
             output = sha1_file(argv[1]);
-        } else if (!strcmp(argv[2], "crc32")) {
+        } else if (!strncmp(argv[2], "crc32", 5)) {
             printf("CRC32 : ");
             output =  crc32_file(argv[1]);
         } else {

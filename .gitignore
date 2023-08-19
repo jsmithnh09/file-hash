@@ -1,0 +1,38 @@
+# some folders I don't want to include...
+.cproject
+.settings/
+.vscode/
+
+#files being edited/autosaved from matlab
+*~
+*.asv
+
+# make and build files
+*.lst
+*.o
+*.eep
+*.lss
+*.map
+*.sym
+*.exe
+*.sln
+
+# MEX files. Should not be tracked in Git.
+*.mex*
+
+# All of the CMAKE generated outputs, (see github's gitignore page.)
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Testing
+Makefile
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+
+# Visual Studio
+*.vcxproj
+*.vcxproj.filters

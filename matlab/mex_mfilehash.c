@@ -14,24 +14,10 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
     if (nlhs != 1) {
         mexErrMsgIdAndTxt("mfilehash:BadOutput", "Expected a string output.");
-    } else if (nrhs < 2) {
-        mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "Two input arguments were expected.");
+    } else if (nrhs < 1) {
+        mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "One input argument was expected.");
     } else if (!mxIsChar(prhs[0])) {
         mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "First input must be a filepath.");
-    } else if (!mxIsChar(prhs[1])) {
-        mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "Second input must indicate a hash algorithm.");
-    }
-
-    // check if a logical "True" was specified for quick-hashing a large file.
-    BYTE quick = 0;
-    if (nrhs == 3)
-    {
-        if (!mxIsLogical(prhs[2]))
-        {
-            mexErrMsgIdAndTxt("mfilehash:InvalidSyntax", "Input QUICKFLAG must be logical.");
-        } else {
-            quick = (*(BYTE *)mxGetLogicals(prhs[2]) == 1);
-        }
     }
 
     // pull the filename, algorithm, and output.
@@ -41,20 +27,20 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     algo = mxArrayToString(prhs[1]);
 
     // determine which algorithm to use for what hash/checksum.
-    if (!strcmpi(algo, "md5")) {
-        hash = md5_file_quick(fname, quick);
+    if (!strncmp(algo, "md5", 3)) {
+        hash = md5_file(fname);
         buflen = (size_t)MD5_STRLEN;
-    } else if (!strcmpi(algo, "sha256")) {
-        hash = sha256_file_quick(fname, quick);
+    } else if (!strncmp(algo, "sha256", 6)) {
+        hash = sha256_file(fname);
         buflen = (size_t)SHA256_STRLEN;
-    } else if (!strcmpi(algo, "sha1")) {
-        hash = sha1_file_quick(fname, quick);
+    } else if (!strncmp(algo, "sha1", 4)) {
+        hash = sha1_file(fname);
         buflen = (size_t)SHA1_STRLEN;
-    } else if (!strcmpi(algo, "crc32")) {
-        hash = crc32_file_quick(fname, quick);
+    } else if (!strncmp(algo, "crc32", 5)) {
+        hash = crc32_file(fname);
         buflen = (size_t)CRC32_STRLEN;
     } else {
-        hash = sha256_file_quick(fname, quick);
+        hash = sha256_file(fname);
         buflen = (size_t)SHA256_STRLEN;
     }
 
