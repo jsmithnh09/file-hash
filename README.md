@@ -17,7 +17,7 @@ MinGW work with CMake, Linux and Apple still need to be tested.
 To run MATLAB tests, the `test_filehash.m` class can be used as a test case alongside the `file_hash.py`
 file to regenerate the test results for the test file "test.txt".
 
-Building
+## Building
 To build, you'll need cmake and Visual Studio 2017 installed, (or a compiler compatible with your target release of MATLAB.) Unfortunately, VS2017 builds 32-bit applications by default. You'll need to specify the 64-bit architecture, or, alternatively, install VS2019 which supports 64-bit applications out of the box.
 
 To generate the build files, run the following command with file-hash as your active directory: 
