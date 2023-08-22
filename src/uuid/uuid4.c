@@ -14,7 +14,7 @@
 #ifdef __CYGWIN__
     #error "Cygwin builds are not supported."
 #endif
-#ifdef WIN32
+#ifdef _WIN32
     #include <windows.h>
     #include <bcrypt.h>
     #ifdef _MSC_VER
@@ -56,7 +56,7 @@
 char* uuid4(void) {
     // generate the crypto-secure bytes.
     uint8_t *buffer;
-    #ifdef WIN32
+    #ifdef _WIN32
         buffer = win32_cryptrand();
     #else
         buffer = cryptrand();

@@ -21,7 +21,7 @@
 #define NUM_UUID4_CHARS 36
 
 /*********************** FUNCTION DECLARATIONS **********************/
-#ifdef WIN32
+#ifdef _WIN32
     uint8_t* win32_cryptrand(void);
 #else
     uint8_t cryptrand(void);
