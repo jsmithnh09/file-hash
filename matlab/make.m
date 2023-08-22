@@ -14,6 +14,15 @@ function make
   end
   
   % perform the actual MEX compilation.
+  fprintf(1, '#### Compiling MFILEHASH\n');
   mex(target, ['-I', srcdir], files{:}, '-outdir', fullfile(rootdir, 'mex'));
-    
+  
+  % now target the UUID portion.
+  target = 'mex_uuidgen.c';
+  srcdir = fullfile(rootdir, 'src', 'uuid');
+  files = {'uuid4.c'};
+  fprintf(1, '### Compiling UUIDGEN\n');
+  mex(target, ['-I', srcdir], files{:}, '-outdir', fullfile(rootdir, 'mex'));
+
+
   end

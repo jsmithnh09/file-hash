@@ -6,8 +6,7 @@
 * Copyright:
 * Disclaimer: This code is presented "as is" without any guarantees.
 * Details:    Generates crypto-secure bytes. NOTE: This ought to use 
-*             Visual Studio instead of Cygwin or MinGW on Windows to
-*             pick up the "bcrypt.lib" long term library.
+*             Visual Studio or MinGW on Windows. Cygwin is untested.
 *
 *********************************************************************/
 

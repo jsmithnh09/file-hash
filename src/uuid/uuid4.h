@@ -18,6 +18,7 @@
 
 /****************************** MACROS ******************************/
 #define NUM_UUID4_BYTES 16
+#define NUM_UUID4_CHARS 36
 
 /*********************** FUNCTION DECLARATIONS **********************/
 #ifdef WIN32
