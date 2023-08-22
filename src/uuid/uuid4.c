@@ -65,6 +65,8 @@ char* uuid4(void) {
     //  u &= 0xffffffffffff0fff3fffffffffffffff
     //  u |= 0x00000000000040008000000000000000
 
+    buffer[6] &= (uint8_t)0x0f;
+    buffer[6] |= (uint8_t)0x40;
     buffer[8] &= (uint8_t)0x3f;
     buffer[8] |= (uint8_t)0x80;
 
@@ -77,8 +79,6 @@ char* uuid4(void) {
         memcpy(&outstr[positions[posIdx]], &scratch, 2);
         byteIdx++;
     }
-    // manually inserting the version number here instead of masking.
-    outstr[14] = '4';
     free(buffer);
     return outstr;
 }
