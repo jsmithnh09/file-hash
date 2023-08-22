@@ -64,9 +64,16 @@ char* uuid4(void) {
     char *outstr = calloc(36+1, sizeof(char)); // 36-element string.
     int byteIdx, posIdx;
     strcpy(outstr, "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF");
-    // need to mask the version and variant fields via:
-    //  u &= 0xffffffffffff0fff3fffffffffffffff
-    //  u |= 0x00000000000040008000000000000000
+    
+    /*
+     * 
+     * from the Julia stdlib:
+     * https://github.com/JuliaLang/julia/blob/a4309ca/stdlib/UUIDs/src/UUIDs.jl#L114-L115
+     * need to mask the version and variant fields via:
+     *  u &= 0xffffffffffff0fff3fffffffffffffff
+     *  u |= 0x00000000000040008000000000000000
+     *
+     */
 
     buffer[6] = ((buffer[6] & 0x0f) | 0x40);
     buffer[8] = ((buffer[8] & 0x3f) | 0x80);
