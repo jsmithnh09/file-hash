@@ -10,7 +10,6 @@
 *
 *********************************************************************/
 
-
 #ifdef WIN32
     #include <windows.h>
     #include <bcrypt.h>
@@ -65,11 +64,9 @@ char* uuid4(void) {
     //  u &= 0xffffffffffff0fff3fffffffffffffff
     //  u |= 0x00000000000040008000000000000000
 
-    buffer[6] &= (uint8_t)0x0f;
-    buffer[6] |= (uint8_t)0x40;
-    buffer[8] &= (uint8_t)0x3f;
-    buffer[8] |= (uint8_t)0x80;
-
+    buffer[6] = ((buffer[6] & 0x0f) | 0x40);
+    buffer[8] = ((buffer[8] & 0x3f) | 0x80);
+    
     uint8_t positions[16] = {0,2,4,6,9,11,14,16,19,21,24,26,28,30,32,34};
     byteIdx = 0;
     posIdx = 0;
