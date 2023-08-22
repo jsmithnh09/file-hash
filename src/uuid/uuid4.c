@@ -5,11 +5,15 @@
 * Author:     Jordan Smith
 * Copyright:
 * Disclaimer: This code is presented "as is" without any guarantees.
-* Details:    Generates crypto-secure bytes. NOTE: This ought to use 
-*             Visual Studio or MinGW on Windows. Cygwin is untested.
+* Details:    Generates crypto-secure bytes and version 4 UUID (GUID). 
+*             NOTE: This ought to use  Visual Studio or MinGW on 
+*             Windows, Cygwin is untested.
 *
 *********************************************************************/
 
+#ifdef __CYGWIN__
+    #error "Cygwin builds are not supported."
+#endif
 #ifdef WIN32
     #include <windows.h>
     #include <bcrypt.h>
