@@ -14,6 +14,7 @@
 #include <stdint.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 /****************************** MACROS ******************************/
 #define NUM_UUID4_BYTES 16

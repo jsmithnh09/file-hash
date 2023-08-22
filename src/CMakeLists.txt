@@ -6,6 +6,7 @@ add_executable(uuid4gen uuid4gen.c uuid/uuid4.c uuid/uuid4.h)
 if (WIN32)
     message(STATUS "Windows build.")
     target_compile_options(hashfile PUBLIC)
+    target_link_libraries(uuid4gen -lbcrypt)
 else()
     # Unix. None of this "WinMain" garbage...
     message(STATUS "UNIX build.")
