@@ -13,7 +13,13 @@ file handlers on abnormal termination.
 To run MATLAB tests, the `test_filehash.m` class can be used as a test case alongside the `file_hash.py`
 file to regenerate the test results for the test file "test.txt".
 
-## Building
-To build, you'll need `make` and `mingw` installed on your Windows machine, (both can be done with Chocolatey.)
-Windows is finnicky when it comes to removing files or directories, so I haven't included a `clean` step in the
-makefile. Apologies!
+Building
+To build, you'll need cmake and Visual Studio 2017 installed, (or a compiler compatible with your target release of MATLAB.) Unfortunately, VS2017 builds 32-bit applications by default. You'll need to specify the 64-bit architecture, or, alternatively, install VS2019 which supports 64-bit applications out of the box.
+
+To generate the build files, run the following command with file-hash as your active directory: 
+`"C:\Program Files\CMake\bin\cmake.exe" -A x64 .`
+
+To generate the executable and MEX file, run the following: 
+`"C:\Program Files\CMake\bin\cmake.exe" --build build --target ../ALL_BUILD`
+
+The ALL_BUILD target is a result of using Visual Studio which doesn't have all as its default build target. Additionally, since we're building from the build directory, the .vscxproj file is in the top-level folder, so you need the ../ to specify where its located.
