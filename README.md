@@ -10,8 +10,7 @@ For cleanup, I've added `atexit` methods in the event the hashing is interrupted
 file handlers on abnormal termination.
 
 Additionally, there's a `uuidgen` executable that can be used for generating version 4 [Universal
-Unique Identifiers](https://en.wikipedia.org/wiki/Universally_unique_identifier). Visual Studio and
-MinGW work with CMake, Linux and Apple still need to be tested.
+Unique Identifiers](https://en.wikipedia.org/wiki/Universally_unique_identifier). Visual Studio works with CMake, Linux and Apple still need to be tested.
 
 ## Testing
 To run MATLAB tests, the `test_filehash.m` class can be used as a test case alongside the `file_hash.py`
@@ -21,9 +20,9 @@ file to regenerate the test results for the test file "test.txt".
 To build, you'll need cmake and Visual Studio 2017 installed, (or a compiler compatible with your target release of MATLAB.) Unfortunately, VS2017 builds 32-bit applications by default. You'll need to specify the 64-bit architecture, or, alternatively, install VS2019 which supports 64-bit applications out of the box.
 
 To generate the build files, run the following command with file-hash as your active directory: 
-`"C:\Program Files\CMake\bin\cmake.exe" -A x64 .`
+`"C:\Program Files\CMake\bin\cmake.exe" -S . -B build -A x64`
 
 To generate the executable and MEX file, run the following: 
-`"C:\Program Files\CMake\bin\cmake.exe" --build build --target ../ALL_BUILD`
+`"C:\Program Files\CMake\bin\cmake.exe" --build build --target ALL_BUILD`
 
-The ALL_BUILD target is a result of using Visual Studio which doesn't have all as its default build target. Additionally, since we're building from the build directory, the .vscxproj file is in the top-level folder, so you need the ../ to specify where its located.
+The ALL_BUILD target is a result of using Visual Studio which doesn't have `all` as its default build target.
