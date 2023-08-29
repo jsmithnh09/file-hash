@@ -1,8 +1,8 @@
-#ifndef __UUID4_H__
-#define __UUID4_H__
+#ifndef __UUID_H__
+#define __UUID_H__
 
 /*********************************************************************
-* Filename:   uuid4.h
+* Filename:   uuid.h
 * Author:     Jordan Smith
 * Copyright:
 * Disclaimer: This code is presented "as is" without any guarantees.
@@ -18,14 +18,22 @@
 
 /****************************** MACROS ******************************/
 #define NUM_UUID4_BYTES 16
-#define NUM_UUID4_CHARS 36
+#define NUM_UUID_CHARS  36
+
+// from the UUID RFC, four namespaces defined for v3 and v5.
+#define STR_UUID_DNS    "6ba7b810-9dad-11d1-80b4-00c04fd430c8"
+#define STR_UUID_OID    "6ba7b812-9dad-11d1-80b4-00c04fd430c8"
+#define STR_UUID_URL    "6ba7b811-9dad-11d1-80b4-00c04fd430c8"
+#define STR_UUID_X500   "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
 
 /*********************** FUNCTION DECLARATIONS **********************/
-#ifdef _WIN32
+#ifdef _MSC_VER
     uint8_t* win32_cryptrand(void);
 #else
     uint8_t cryptrand(void);
 #endif
+char* bin2uuid(uint8_t *buffer);
 char* uuid4(void);
+
 
 #endif

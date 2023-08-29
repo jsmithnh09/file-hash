@@ -1,0 +1,7 @@
+add_library(hashers STATIC crc32.c md5.c sha1.c sha256.c)
+target_include_directories(hashers PUBLIC ../../include/hashers)
+if (MSVC)
+    target_compile_options(hashers PUBLIC /W4)
+else()
+    target_compile_options(hashers PUBLIC -Wall -O2)
+endif()

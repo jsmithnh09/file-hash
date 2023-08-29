@@ -36,3 +36,6 @@ _deps
 # Visual Studio
 *.vcxproj
 *.vcxproj.filters
+
+# ignore the build directory.
+[Bb]uild/

@@ -1,7 +1,7 @@
-#include "uuid4.h"
+#include "uuid.h"
 
 /*********************************************************************
-* Filename:   uuid4.c
+* Filename:   uuid.c
 * Author:     Jordan Smith
 * Copyright:
 * Disclaimer: This code is presented "as is" without any guarantees.
@@ -11,10 +11,12 @@
 *
 *********************************************************************/
 
-#ifdef __CYGWIN__
+#if defined(__CYGWIN__)
     #error "Cygwin builds are not supported."
+#elif defined(__MINGW32__)
+    #error "MinGW does not support 'getrandom' API."
 #endif
-#ifdef _WIN32
+#ifdef _MSC_VER
     #include <windows.h>
     #include <bcrypt.h>
     #ifdef _MSC_VER
@@ -53,18 +55,41 @@
     }
 #endif
 
+char* bin2uuid(uint8_t *buffer) {
+    char *outstr = calloc(NUM_UUID_CHARS+1, sizeof(char));
+    strcpy(outstr, "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"); // using max-UUID.
+    int byteIdx, posIdx;
+    char scratch[3] = {0,};
+    byteIdx = 0;
+    posIdx = 0;
+    while(posIdx < NUM_UUID_CHARS) {
+        switch (posIdx) {
+            case 8:
+            case 13:
+            case 18:
+            case 23:
+                // already have dash in-place.
+                posIdx++;
+                break;
+            default:
+                sprintf(scratch, "%.2x", (unsigned int)buffer[byteIdx]);
+                memcpy(&outstr[posIdx], &scratch, 2);
+                byteIdx++;
+                posIdx += 2;
+        }
+    }
+    return outstr;
+}
+
 char* uuid4(void) {
     // generate the crypto-secure bytes.
     uint8_t *buffer;
-    #ifdef _WIN32
+    char *uuidstr;
+    #ifdef _MSC_VER
         buffer = win32_cryptrand();
     #else
         buffer = cryptrand();
     #endif
-    char *outstr = calloc(36+1, sizeof(char)); // 36-element string.
-    int byteIdx, posIdx;
-    strcpy(outstr, "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF");
-    
     /*
      * 
      * from the Julia stdlib:
@@ -74,19 +99,9 @@ char* uuid4(void) {
      *  u |= 0x00000000000040008000000000000000
      *
      */
-
     buffer[6] = ((buffer[6] & 0x0f) | 0x40);
     buffer[8] = ((buffer[8] & 0x3f) | 0x80);
-    
-    uint8_t positions[16] = {0,2,4,6,9,11,14,16,19,21,24,26,28,30,32,34};
-    byteIdx = 0;
-    posIdx = 0;
-    char scratch[3] = {0,}; // 2-bytes + null terminate.
-    for (posIdx = 0; posIdx < 16; posIdx++) {
-        sprintf(scratch, "%.2x", (unsigned int)buffer[byteIdx]);
-        memcpy(&outstr[positions[posIdx]], &scratch, 2);
-        byteIdx++;
-    }
+    uuidstr = bin2uuid(buffer);
     free(buffer);
-    return outstr;
+    return uuidstr;
 }
