@@ -6,8 +6,8 @@
 * Copyright:
 * Disclaimer: This code is presented "as is" without any guarantees.
 * Details:    Generates crypto-secure bytes and version 4 UUID (GUID). 
-*             NOTE: This ought to use  Visual Studio or MinGW on 
-*             Windows, Cygwin is untested.
+*             NOTE: This ought to use  Visual Studio or GNU. MinGW and
+*             Cygwin will cause issues...
 *
 *********************************************************************/
 
@@ -16,7 +16,7 @@
 #elif defined(__MINGW32__)
     #error "MinGW does not support 'getrandom' API."
 #endif
-#ifdef _MSC_VER
+#ifdef _WIN32
     #include <windows.h>
     #include <bcrypt.h>
     #ifdef _MSC_VER
@@ -85,7 +85,7 @@ char* uuid4(void) {
     // generate the crypto-secure bytes.
     uint8_t *buffer;
     char *uuidstr;
-    #ifdef _MSC_VER
+    #ifdef _WIN32
         buffer = win32_cryptrand();
     #else
         buffer = cryptrand();

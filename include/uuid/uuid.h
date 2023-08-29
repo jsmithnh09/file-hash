@@ -27,7 +27,7 @@
 #define STR_UUID_X500   "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
 
 /*********************** FUNCTION DECLARATIONS **********************/
-#ifdef _MSC_VER
+#ifdef _WIN32
     uint8_t* win32_cryptrand(void);
 #else
     uint8_t cryptrand(void);
