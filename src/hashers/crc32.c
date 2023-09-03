@@ -130,7 +130,6 @@ char* crc32_file(const char* filename)
 
 char* crc32_bytes(const void* buffer, size_t nbElements)
 {
-	BYTE hashbuff[CRC32_BLOCK_SIZE];
 	BYTE *byteBuff = (BYTE)(buffer);
 	size_t buffIdx = 0;
 	CRC32_CTX ctx;
