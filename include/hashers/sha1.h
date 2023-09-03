@@ -30,6 +30,7 @@ void sha1_init(SHA1_CTX *ctx);
 void sha1_update(SHA1_CTX *ctx, const BYTE data[], size_t len);
 void sha1_final(SHA1_CTX *ctx, BYTE hash[]);
 char* sha1_file(const char* filename);
+char* sha1_bytes(const void* buffer, size_t nbElements);
 void sha1_closefile(void);
 
 #endif   // SHA1_H
