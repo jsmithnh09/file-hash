@@ -240,14 +240,14 @@ char* md5_file(const char* filename)
 char* md5_bytes(const void* buffer, size_t nbElements)
 {
 	BYTE hashbuff[MD5_BLOCK_SIZE];
-	BYTE *byteBuff = (BYTE)(buffer);
+	BYTE *byteBuff = (BYTE *)buffer;
 	size_t buffIdx = 0;
 	size_t hexIdx = 0;
 	MD5_CTX ctx;
 	char *fileprint = (char*)calloc((MD5_STRLEN)+1, sizeof(char));
 	md5_init(&ctx);
 	while(buffIdx < nbElements) {
-		md5_update(&ctx, byteBuff[buffIdx], 1);
+		md5_update(&ctx, &(byteBuff[buffIdx]), 1);
 		buffIdx++;
 	}
 	md5_final(&ctx, hashbuff);

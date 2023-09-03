@@ -197,14 +197,14 @@ char* sha1_file(const char* filename)
 char* sha1_bytes(const void* buffer, size_t nbElements)
 {
 	BYTE hashbuff[SHA1_BLOCK_SIZE];
-	BYTE *byteBuff = (BYTE)(buffer);
+	BYTE *byteBuff = (BYTE *)buffer;
 	size_t buffIdx = 0;
 	size_t hexIdx = 0;
 	SHA1_CTX ctx;
 	char *fileprint = (char*)calloc((SHA1_STRLEN)+1, sizeof(char));
 	sha1_init(&ctx);
 	while(buffIdx < nbElements) {
-		sha1_update(&ctx, byteBuff[buffIdx], 1);
+		sha1_update(&ctx, &(byteBuff[buffIdx]), 1);
 		buffIdx++;
 	}
 	sha1_final(&ctx, hashbuff);

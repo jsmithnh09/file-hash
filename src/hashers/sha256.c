@@ -204,14 +204,14 @@ char* sha256_file(const char *filename)
 char* sha256_bytes(const void* buffer, size_t nbElements)
 {
 	BYTE hashbuff[SHA256_BLOCK_SIZE];
-	BYTE *byteBuff = (BYTE)(buffer);
+	BYTE *byteBuff = (BYTE *)buffer;
 	size_t buffIdx = 0;
 	size_t hexIdx = 0;
 	SHA256_CTX ctx;
 	char *fileprint = (char*)calloc((SHA256_STRLEN)+1, sizeof(char));
 	sha256_init(&ctx);
 	while(buffIdx < nbElements) {
-		sha256_update(&ctx, byteBuff[buffIdx], 1);
+		sha256_update(&ctx, &(byteBuff[buffIdx]), 1);
 		buffIdx++;
 	}
 	sha256_final(&ctx, hashbuff);
