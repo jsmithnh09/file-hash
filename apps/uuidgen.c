@@ -19,20 +19,20 @@
 *   -n <number-of-ids>      = prints "n" number of IDs. Deafult is 1.
 ******************************************************************/
 
-char* uuid3(const char* instr)
+char* uuid3(const char* namespace, const char* instr)
 {
     // concatenate the output and one of the DNS based inputs.
     char *input, *uuidstr;
-    BYTE *namespace, *hash;
+    BYTE *nsbytes, *hash;
     uint8_t bIdx;
 
     // convert the namespace UUID to its byte representation.
-    namespace = (BYTE *)uuid2bin(STR_UUID_OID);
+    nsbytes = (BYTE *)uuid2bin(namespace);
 
     // concatenate the UUID namespace bytes and the ASCII input string.
     size_t nchars = strlen(instr) + NUM_UUID_BYTES;
     input = (char *)calloc(nchars, sizeof(char));
-    memcpy(input, namespace, NUM_UUID_BYTES);
+    memcpy(input, nsbytes, NUM_UUID_BYTES);
 
     // fill up the second half with the ASCII character bytes.
     for (bIdx = NUM_UUID_BYTES; bIdx < nchars; bIdx++) {
@@ -50,24 +50,24 @@ char* uuid3(const char* instr)
     // cleanup.
     free(input);
     free(hash);
-    free(namespace);
+    free(nsbytes);
     return uuidstr;
 }
 
-char* uuid5(const char* instr)
+char* uuid5(const char* namespace, const char* instr)
 {
-    // concatenate the output and one of the DNS based inputs.
+   // concatenate the output and one of the DNS based inputs.
     char *input, *uuidstr;
-    BYTE *namespace, *hash;
+    BYTE *nsbytes, *hash;
     uint8_t bIdx;
 
     // convert the namespace UUID to its byte representation.
-    namespace = (BYTE *)uuid2bin(STR_UUID_OID);
+    nsbytes = (BYTE *)uuid2bin(namespace);
 
     // concatenate the UUID namespace bytes and the ASCII input string.
     size_t nchars = strlen(instr) + NUM_UUID_BYTES;
     input = (char *)calloc(nchars, sizeof(char));
-    memcpy(input, namespace, NUM_UUID_BYTES);
+    memcpy(input, nsbytes, NUM_UUID_BYTES);
 
     // fill up the second half with the ASCII character bytes.
     for (bIdx = NUM_UUID_BYTES; bIdx < nchars; bIdx++) {
@@ -85,7 +85,7 @@ char* uuid5(const char* instr)
     // cleanup.
     free(input);
     free(hash);
-    free(namespace);
+    free(nsbytes);
     return uuidstr;
 }
 
@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
         char* uuid;
         switch(vnum) {
             case 3:
-                uuid = uuid3(argv[2]);
+                uuid = uuid3(STR_UUID_OID, argv[2]);
                 printf("%.36s\n", uuid);
                 free(uuid);
                 return 0;
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
                 }
                 return 0;
             case 5:
-                uuid = uuid5(argv[2]);
+                uuid = uuid5(STR_UUID_OID, argv[2]);
                 printf("%.36s\n", uuid);
                 free(uuid);
                 return 0;
