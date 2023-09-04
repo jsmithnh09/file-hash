@@ -128,18 +128,16 @@ char* crc32_file(const char* filename)
     return fileprint;
 }
 
-char* crc32_bytes(const void* buffer, size_t nbElements)
+WORD crc32_bytes(const void* buffer, size_t nbElements)
 {
 	BYTE *byteBuff = (BYTE *)buffer;
 	size_t buffIdx = 0;
 	CRC32_CTX ctx;
-	char *fileprint = (char*)calloc((CRC32_STRLEN)+1, sizeof(char));
 	crc32_init(&ctx);
 	while(buffIdx < nbElements) {
 		crc32_update(&ctx, &(byteBuff[buffIdx]), 1);
 		buffIdx++;
 	}
 	crc32_final(&ctx);
-	sprintf(fileprint, "%08x", ctx.state);
-    return fileprint;
+    return ctx.state;
 }

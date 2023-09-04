@@ -30,8 +30,8 @@
     #endif
 
     uint8_t* win32_cryptrand(void) {
-        BYTE *buffer = calloc(NUM_UUID4_BYTES, sizeof(BYTE));
-        DWORD Bsize = NUM_UUID4_BYTES * sizeof(BYTE);
+        BYTE *buffer = calloc(NUM_UUID_BYTES, sizeof(BYTE));
+        DWORD Bsize = NUM_UUID_BYTES * sizeof(BYTE);
         NTSTATUS stat;
         memset(buffer, 0, Bsize);
         stat = BCryptGenRandom(NULL, buffer, Bsize, BCRYPT_USE_SYSTEM_PREFERRED_RNG);
@@ -45,8 +45,8 @@
     #include <sys/random.h>
     uint8_t* cryptrand(void) {
         ssize_t stat;
-        uint8_t *buffer = calloc(NUM_UUID4_BYTES, sizeof(uint8_t));
-        stat = getrandom((void)buffer, (size_t)NUM_UUID4_BYTES, GRND_NONBLOCK);
+        uint8_t *buffer = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
+        stat = getrandom((void)buffer, (size_t)NUM_UUID_BYTES, GRND_NONBLOCK);
         if (stat == -1) {
             printf("Internal Failure.\n");
             exit(1);
@@ -79,6 +79,32 @@ char* bin2uuid(uint8_t *buffer) {
         }
     }
     return outstr;
+}
+
+// converts the UUID string into its byte-pack representation.
+uint8_t* uuid2bin(const char* uuid) {
+    uint8_t *output = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
+    if (strlen(uuid) != NUM_UUID_CHARS) {
+        fprintf(stderr, "Invalid number of UUID characters.\n");
+        exit(1);
+    }
+    uint8_t posIdx = 0;
+    uint8_t byteIdx = 0;
+    char scratch[] = "0x00";
+    while(posIdx < NUM_UUID_CHARS) {
+        if (uuid[posIdx] == '-') {
+            posIdx++;
+            continue;
+        } else {
+            scratch[2] = uuid[posIdx];
+            scratch[3] = uuid[posIdx+1];
+            output[byteIdx] = (uint8_t)strtol(scratch, NULL, 0);
+            posIdx += 2;
+            byteIdx++;
+        }
+
+    }
+    return output;
 }
 
 char* uuid4(void) {

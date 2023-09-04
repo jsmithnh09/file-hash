@@ -237,23 +237,19 @@ char* md5_file(const char* filename)
     return fileprint;
 }
 
-char* md5_bytes(const void* buffer, size_t nbElements)
+BYTE* md5_bytes(const void* buffer, size_t nbElements)
 {
-	BYTE hashbuff[MD5_BLOCK_SIZE];
+	
+	BYTE* hashbuff = (BYTE *)calloc(MD5_BLOCK_SIZE, sizeof(BYTE));
 	BYTE *byteBuff = (BYTE *)buffer;
 	size_t buffIdx = 0;
 	size_t hexIdx = 0;
 	MD5_CTX ctx;
-	char *fileprint = (char*)calloc((MD5_STRLEN)+1, sizeof(char));
 	md5_init(&ctx);
 	while(buffIdx < nbElements) {
 		md5_update(&ctx, &(byteBuff[buffIdx]), 1);
 		buffIdx++;
 	}
 	md5_final(&ctx, hashbuff);
-	for (hexIdx = 0; hexIdx < MD5_BLOCK_SIZE; hexIdx++)
-	{
-		sprintf(&fileprint[hexIdx*2], "%02x", (unsigned int)hashbuff[hexIdx]);
-	}
-	return fileprint;
+	return hashbuff;
 }

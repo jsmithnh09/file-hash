@@ -17,7 +17,7 @@
 #include <stdlib.h>
 
 /****************************** MACROS ******************************/
-#define NUM_UUID4_BYTES 16
+#define NUM_UUID_BYTES  16
 #define NUM_UUID_CHARS  36
 
 // from the UUID RFC, four namespaces defined for v3 and v5.
@@ -33,6 +33,7 @@
     uint8_t cryptrand(void);
 #endif
 char* bin2uuid(uint8_t *buffer);
+uint8_t* uuid2bin(const char* uuid);
 char* uuid4(void);
 
 

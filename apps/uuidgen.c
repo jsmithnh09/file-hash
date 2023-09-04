@@ -23,13 +23,22 @@ char* uuid3(const char* instr)
 {
     // concatenate the output and one of the DNS based inputs.
     char *input, *uuidstr;
-    char namespace[] = STR_UUID_OID;
-    BYTE *hash;
-    size_t nchars = strlen(instr) + strlen(namespace);
-    input = (char *)calloc(nchars+1, sizeof(char));
-    strcpy(input, namespace);
-    strcat(input, instr);
-    hash = (BYTE *)md5_bytes((void *)input, strlen(input));
+    BYTE *namespace, *hash;
+    uint8_t bIdx;
+
+    // convert the namespace UUID to its byte representation.
+    namespace = (BYTE *)uuid2bin(STR_UUID_OID);
+
+    // concatenate the UUID namespace bytes and the ASCII input string.
+    size_t nchars = strlen(instr) + NUM_UUID_BYTES;
+    input = (char *)calloc(nchars, sizeof(char));
+    memcpy(input, namespace, NUM_UUID_BYTES);
+
+    // fill up the second half with the ASCII character bytes.
+    for (bIdx = NUM_UUID_BYTES; bIdx < nchars; bIdx++) {
+        input[bIdx] = instr[bIdx-NUM_UUID_BYTES];
+    }
+    hash = md5_bytes((void *)input, nchars);
 
     // mask with the version and flip the first two bits to "10".
     hash[6] = ((hash[6] & 0x0f) | 0x30);
@@ -41,6 +50,7 @@ char* uuid3(const char* instr)
     // cleanup.
     free(input);
     free(hash);
+    free(namespace);
     return uuidstr;
 }
 
@@ -48,13 +58,22 @@ char* uuid5(const char* instr)
 {
     // concatenate the output and one of the DNS based inputs.
     char *input, *uuidstr;
-    char namespace[] = STR_UUID_OID;
-    BYTE *hash;
-    size_t nchars = strlen(instr) + strlen(namespace);
-    input = (char *)calloc(nchars+1, sizeof(char));
-    strcpy(input, namespace);
-    strcat(input, instr);
-    hash = (BYTE *)sha1_bytes((void *)input, strlen(input));
+    BYTE *namespace, *hash;
+    uint8_t bIdx;
+
+    // convert the namespace UUID to its byte representation.
+    namespace = (BYTE *)uuid2bin(STR_UUID_OID);
+
+    // concatenate the UUID namespace bytes and the ASCII input string.
+    size_t nchars = strlen(instr) + NUM_UUID_BYTES;
+    input = (char *)calloc(nchars, sizeof(char));
+    memcpy(input, namespace, NUM_UUID_BYTES);
+
+    // fill up the second half with the ASCII character bytes.
+    for (bIdx = NUM_UUID_BYTES; bIdx < nchars; bIdx++) {
+        input[bIdx] = instr[bIdx-NUM_UUID_BYTES];
+    }
+    hash = sha1_bytes((void *)input, nchars);
 
     // mask with the version and flip the first two bits to "10".
     hash[6] = ((hash[6] & 0x0f) | 0x50);
@@ -66,6 +85,7 @@ char* uuid5(const char* instr)
     // cleanup.
     free(input);
     free(hash);
+    free(namespace);
     return uuidstr;
 }
 
@@ -123,5 +143,4 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "Invalid syntax.\n");
         exit(1);
     }
-    return 0;
 }
