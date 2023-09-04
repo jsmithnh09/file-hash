@@ -1,14 +1,14 @@
 #############################################################################
 # UUIDGEN and HASHFILE apps entries will go into "bin"
 #############################################################################
-add_executable(uuidgen uuid4gen.c)
+add_executable(uuidgen uuidgen.c)
 add_executable(hashfile hashfile.c)
 
-target_link_libraries(uuidgen PRIVATE uuid)
+target_link_libraries(uuidgen PRIVATE uuid hashers)
 target_link_libraries(hashfile PRIVATE hashers)
 
 target_include_directories(hashfile PUBLIC ../include/hashers)
-target_include_directories(uuidgen  PUBLIC ../include/uuid)
+target_include_directories(uuidgen  PUBLIC ../include/uuid ../include/hashers)
 
 if (MSVC) # link against -lbcrypt?
     target_compile_options(uuidgen PUBLIC /W4)
