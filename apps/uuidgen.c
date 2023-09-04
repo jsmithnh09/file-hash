@@ -70,46 +70,58 @@ char* uuid5(const char* instr)
 }
 
 /*********************************************************
-* UUIDGEN [NUM_IDS=1] [VERSION=4]
+* UUIDGEN [NUM_IDS=1] [VERSION=4] ...VisualStudio, NO getopt???
+* Uses:
+*   UUIDGEN 3 <"INPUT-STR">
+*   UUIDGEN 4 <NUM-IDs>
+*   UUIDGEN 5 <"INPUT-STR">
+*
+* Default, no args: UUIDGEN 4 1
 **********************************************************/
 int main(int argc, char *argv[]) {
-    long numIds = 1;
-    uint8_t vnum = 4;
-    if (argc == 2) {
-        if (sscanf(argv[1], "%ld", (long *)&numIds) == -1) {
-            fprintf(stderr, "ERROR - could not extract # of IDs.\n");
+    if (argc == 3) {
+        long numIds = 1;
+        uint8_t vnum = 4;
+        if (sscanf(argv[1], "%i", (uint8_t *)&vnum) == -1) {
+            fprintf(stderr, "Cannot parse UUID version number.\n");
             exit(1);
         }
-    } else if (argc == 3) {
-        if (sscanf(argv[1], "%i", (long *)&numIds) == -1) {
-            fprintf(stderr, "ERROR - could not extract # of IDs.\n");
-            exit(1);
-        }
-        if (sscanf(argv[2], "%i", (uint8_t *)&vnum) == -1) {
-            fprintf(stderr, "ERROR - could not extract version number.\n");
-            exit(1);
-        }   
-    }
-    long iterIdx;
-    char *uuid;
-    for (iterIdx = 0; iterIdx < numIds; iterIdx++)
-    {
+        char* uuid;
         switch(vnum) {
             case 3:
-                uuid = uuid3("deadbeef");
-                break;
+                uuid = uuid3(argv[2]);
+                printf("%.36s\n", uuid);
+                free(uuid);
+                return 0;
             case 4:
-                uuid = uuid4();
-                break;
+                long iterIdx;
+                if (sscanf(argv[2], "%ld", (long *)&numIds) == -1) {
+                    fprintf(stderr, "Cannot parse # of version-4 UUIDs to generate.\n");
+                    exit(1);
+                }
+                for (iterIdx = 0; iterIdx < numIds; iterIdx++) {
+                    uuid = uuid4();
+                    printf("%.36s\n", uuid);
+                    free(uuid);
+                }
+                return 0;
             case 5:
-                uuid = uuid5("deadbeef");
-                break;
+                uuid = uuid5(argv[2]);
+                printf("%.36s\n", uuid);
+                free(uuid);
+                return 0;
             default:
-                fprintf(stderr, "Version number must be (3 <= vnum <= 5).\n");
+                fprintf(stderr, "Invalid version number %d.\n", (int)vnum);
                 exit(1);
         }
+    } else if (argc == 1) {
+        char *uuid = uuid4();
         printf("%.36s\n", uuid);
         free(uuid);
+        return 0;
+    } else {
+        fprintf(stderr, "Invalid syntax.\n");
+        exit(1);
     }
     return 0;
 }
