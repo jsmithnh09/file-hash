@@ -12,10 +12,8 @@
 
 /*************************** HEADER FILES ***************************/
 #include <stdint.h>
-#include <stddef.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <sys/types.h>
 #include <errno.h>
 
@@ -24,12 +22,5 @@
 #define SMALL_THRESHOLD     16384  //  128 KB small file thresold.
 
 #define FILE_IS_SMALL(x) (x < SMALL_THRESHOLD)
-
-/**************************** DATA TYPES ****************************/
-#if !defined(HASH_TYPES)
-    typedef uint8_t BYTE;
-    typedef uint32_t WORD;
-    #define HASH_TYPES
-#endif 
 
 #endif

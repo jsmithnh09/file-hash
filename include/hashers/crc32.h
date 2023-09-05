@@ -21,16 +21,16 @@
 
 /**************************** DATA TYPES ****************************/
 typedef struct {
-    BYTE table[256];
-    WORD state;
+    uint8_t table[256];
+    uint32_t state;
 } CRC32_CTX;
 
 /*********************** FUNCTION DECLARATIONS **********************/
 void crc32_init(CRC32_CTX *ctx);
-void crc32_update(CRC32_CTX *ctx, const BYTE data[], size_t len);
+void crc32_update(CRC32_CTX *ctx, const uint8_t data[], size_t len);
 void crc32_final(CRC32_CTX *ctx);
 char* crc32_file(const char* filename);
-WORD crc32_bytes(const void* buffer, size_t nbElements);
+uint32_t crc32_bytes(const void* buffer, size_t nbElements);
 void crc32_closefile(void);
 
 

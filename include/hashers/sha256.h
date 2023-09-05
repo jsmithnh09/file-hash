@@ -15,22 +15,22 @@
 
 /****************************** MACROS ******************************/
 #define SHA256_BLOCK_SIZE 	32            // SHA256 outputs a 32 byte digest
-#define SHA256_STRLEN 		  64			      // hex-string length on output.
+#define SHA256_STRLEN 		64		      // hex-string length on output.
 
 /**************************** DATA TYPES ****************************/
 typedef struct {
-	BYTE data[64];
-	WORD datalen;
+	uint8_t data[64];
+	uint32_t datalen;
 	unsigned long long bitlen;
-	WORD state[8];
+	uint32_t state[8];
 } SHA256_CTX;
 
 /*********************** FUNCTION DECLARATIONS **********************/
 void sha256_init(SHA256_CTX *ctx);
-void sha256_update(SHA256_CTX *ctx, const BYTE data[], size_t len);
-void sha256_final(SHA256_CTX *ctx, BYTE hash[]);
+void sha256_update(SHA256_CTX *ctx, const uint8_t data[], size_t len);
+void sha256_final(SHA256_CTX *ctx, uint8_t hash[]);
 char* sha256_file(const char* filename);
-BYTE* sha256_bytes(const void* buffer, size_t nbElements);
+uint8_t* sha256_bytes(const void* buffer, size_t nbElements);
 void sha256_closefile(void);
 
 #endif   // SHA256_H

@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <memory.h>
 #include <string.h>
-#include "crc32.h"
+#include "hashers/crc32.h"
 
 /****************************** MACROS ******************************/
 
@@ -22,7 +22,7 @@
 #define UPDC32(byte, crc) (crc32_table[((crc) ^ (byte)) & 0xff] ^ ((crc) >> 8))
 
 /**************************** VARIABLES *****************************/
-static const WORD crc32_table[256] = { /* CRC polynomial 0xedb88320 */
+static const uint32_t crc32_table[256] = { /* CRC polynomial 0xedb88320 */
 0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419, 0x706af48f,
 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4, 0xe0d5e91e, 0x97d2d988,
 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07, 0x90bf1d91, 0x1db71064, 0x6ab020f2,
@@ -76,7 +76,7 @@ void crc32_init(CRC32_CTX *ctx)
     ctx->state = 0xFFFFFFFF;
 }
 
-void crc32_update(CRC32_CTX *ctx, const BYTE data[], size_t len)
+void crc32_update(CRC32_CTX *ctx, const uint8_t data[], size_t len)
 {
     size_t ind;
     for (ind = 0; ind < len; ind++) {
@@ -128,9 +128,9 @@ char* crc32_file(const char* filename)
     return fileprint;
 }
 
-WORD crc32_bytes(const void* buffer, size_t nbElements)
+uint32_t crc32_bytes(const void* buffer, size_t nbElements)
 {
-	BYTE *byteBuff = (BYTE *)buffer;
+	uint8_t *byteBuff = (uint8_t *)buffer;
 	size_t buffIdx = 0;
 	CRC32_CTX ctx;
 	crc32_init(&ctx);

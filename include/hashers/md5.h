@@ -18,18 +18,18 @@
 
 /**************************** DATA TYPES ****************************/
 typedef struct {
-   BYTE data[64];
-   WORD datalen;
+   uint8_t data[64];
+   uint32_t datalen;
    unsigned long long bitlen;
-   WORD state[4];
+   uint32_t state[4];
 } MD5_CTX;
 
 /*********************** FUNCTION DECLARATIONS **********************/
 void md5_init(MD5_CTX *ctx);
-void md5_update(MD5_CTX *ctx, const BYTE data[], size_t len);
-void md5_final(MD5_CTX *ctx, BYTE hash[]);
+void md5_update(MD5_CTX *ctx, const uint8_t data[], size_t len);
+void md5_final(MD5_CTX *ctx, uint8_t hash[]);
 char* md5_file(const char* filename);
-BYTE* md5_bytes(const void* buffer, size_t nbElements);
+uint8_t* md5_bytes(const void* buffer, size_t nbElements);
 void md5_closefile(void);
 
 #endif   // MD5_H

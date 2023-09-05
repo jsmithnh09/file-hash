@@ -7,8 +7,8 @@ add_executable(hashfile hashfile.c)
 target_link_libraries(uuidgen PRIVATE uuid hashers)
 target_link_libraries(hashfile PRIVATE hashers)
 
-target_include_directories(hashfile PUBLIC ../include/hashers)
-target_include_directories(uuidgen  PUBLIC ../include/uuid ../include/hashers)
+target_include_directories(hashfile PUBLIC ../include)
+target_include_directories(uuidgen  PUBLIC ../include)
 
 if (MSVC) # link against -lbcrypt?
     target_compile_options(uuidgen PUBLIC /W4)

@@ -1,4 +1,6 @@
-#include "uuid.h"
+#include "uuid/uuid.h"
+#include "hashers/md5.h"
+#include "hashers/sha1.h"
 
 /*********************************************************************
 * Filename:   uuid.c
@@ -13,10 +15,8 @@
 
 #if defined(__CYGWIN__)
     #error "Cygwin builds are not supported."
-#elif defined(__MINGW32__)
-    #error "MinGW does not support 'getrandom' API."
 #endif
-#ifdef _WIN32
+#if defined(_WIN32)
     #include <windows.h>
     #include <bcrypt.h>
     #ifdef _MSC_VER
@@ -30,8 +30,8 @@
     #endif
 
     uint8_t* win32_cryptrand(void) {
-        BYTE *buffer = calloc(NUM_UUID_BYTES, sizeof(BYTE));
-        DWORD Bsize = NUM_UUID_BYTES * sizeof(BYTE);
+        uint8_t *buffer = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
+        DWORD Bsize = NUM_UUID_BYTES * sizeof(uint8_t);
         NTSTATUS stat;
         memset(buffer, 0, Bsize);
         stat = BCryptGenRandom(NULL, buffer, Bsize, BCRYPT_USE_SYSTEM_PREFERRED_RNG);
@@ -105,6 +105,76 @@ uint8_t* uuid2bin(const char* uuid) {
 
     }
     return output;
+}
+
+char* uuid3(const char* namespace, const char* instr)
+{
+    // concatenate the output and one of the DNS based inputs.
+    char *input, *uuidstr;
+    uint8_t *nsbytes, *hash;
+    uint8_t bIdx;
+
+    // convert the namespace UUID to its byte representation.
+    nsbytes = (uint8_t *)uuid2bin(namespace);
+
+    // concatenate the UUID namespace bytes and the ASCII input string.
+    size_t nchars = strlen(instr) + NUM_UUID_BYTES;
+    input = (char *)calloc(nchars, sizeof(char));
+    memcpy(input, nsbytes, NUM_UUID_BYTES);
+
+    // fill up the second half with the ASCII character bytes.
+    for (bIdx = NUM_UUID_BYTES; bIdx < nchars; bIdx++) {
+        input[bIdx] = instr[bIdx-NUM_UUID_BYTES];
+    }
+    hash = md5_bytes((void *)input, nchars);
+
+    // mask with the version and flip the first two bits to "10".
+    hash[6] = ((hash[6] & 0x0f) | 0x30);
+    hash[8] = ((hash[8] & 0x3f) | 0x80);
+
+    // the resulting UUID will be truncated, but that's expected.
+    uuidstr = bin2uuid(hash);
+    
+    // cleanup.
+    free(input);
+    free(hash);
+    free(nsbytes);
+    return uuidstr;
+}
+
+char* uuid5(const char* namespace, const char* instr)
+{
+   // concatenate the output and one of the DNS based inputs.
+    char *input, *uuidstr;
+    uint8_t *nsbytes, *hash;
+    uint8_t bIdx;
+
+    // convert the namespace UUID to its uint8_t representation.
+    nsbytes = (uint8_t *)uuid2bin(namespace);
+
+    // concatenate the UUID namespace bytes and the ASCII input string.
+    size_t nchars = strlen(instr) + NUM_UUID_BYTES;
+    input = (char *)calloc(nchars, sizeof(char));
+    memcpy(input, nsbytes, NUM_UUID_BYTES);
+
+    // fill up the second half with the ASCII character bytes.
+    for (bIdx = NUM_UUID_BYTES; bIdx < nchars; bIdx++) {
+        input[bIdx] = instr[bIdx-NUM_UUID_BYTES];
+    }
+    hash = sha1_bytes((void *)input, nchars);
+
+    // mask with the version and flip the first two bits to "10".
+    hash[6] = ((hash[6] & 0x0f) | 0x50);
+    hash[8] = ((hash[8] & 0x3f) | 0x80);
+
+    // the resulting UUID will be truncated, but that's expected.
+    uuidstr = bin2uuid(hash);
+    
+    // cleanup.
+    free(input);
+    free(hash);
+    free(nsbytes);
+    return uuidstr;
 }
 
 char* uuid4(void) {

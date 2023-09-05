@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "common.h"
-#include "sha256.h"
-#include "md5.h"
-#include "sha1.h"
-#include "crc32.h"
+#include "hashers/sha256.h"
+#include "hashers/md5.h"
+#include "hashers/sha1.h"
+#include "hashers/crc32.h"
 
 /*********************************************************
 * Filename: hashfile

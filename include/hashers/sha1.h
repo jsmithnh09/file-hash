@@ -18,19 +18,19 @@
 
 /**************************** DATA TYPES ****************************/
 typedef struct {
-	BYTE data[64];
-	WORD datalen;
+	uint8_t data[64];
+	uint32_t datalen;
 	unsigned long long bitlen;
-	WORD state[5];
-	WORD k[4];
+	uint32_t state[5];
+	uint32_t k[4];
 } SHA1_CTX;
 
 /*********************** FUNCTION DECLARATIONS **********************/
 void sha1_init(SHA1_CTX *ctx);
-void sha1_update(SHA1_CTX *ctx, const BYTE data[], size_t len);
-void sha1_final(SHA1_CTX *ctx, BYTE hash[]);
+void sha1_update(SHA1_CTX *ctx, const uint8_t data[], size_t len);
+void sha1_final(SHA1_CTX *ctx, uint8_t hash[]);
 char* sha1_file(const char* filename);
-BYTE* sha1_bytes(const void* buffer, size_t nbElements);
+uint8_t* sha1_bytes(const void* buffer, size_t nbElements);
 void sha1_closefile(void);
 
 #endif   // SHA1_H

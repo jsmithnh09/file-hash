@@ -34,7 +34,9 @@
 #endif
 char* bin2uuid(uint8_t *buffer);
 uint8_t* uuid2bin(const char* uuid);
+char* uuid3(const char* namespace, const char* instr);
 char* uuid4(void);
+char* uuid5(const char* namespace, const char* instr);
 
 
 #endif
