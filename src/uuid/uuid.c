@@ -48,7 +48,7 @@
         uint8_t *buffer = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
         stat = getrandom((void)buffer, (size_t)NUM_UUID_BYTES, GRND_NONBLOCK);
         if (stat == -1) {
-            printf("Internal Failure.\n");
+            fprintf(stderr, "Internal Failure.\n");
             exit(1);
         }
         return buffer;
