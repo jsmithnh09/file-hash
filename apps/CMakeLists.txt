@@ -4,7 +4,7 @@
 add_executable(uuidgen uuidgen.c)
 add_executable(hashfile hashfile.c)
 
-target_link_libraries(uuidgen PRIVATE uuid hashers)
+target_link_libraries(uuidgen PRIVATE uuid)
 target_link_libraries(hashfile PRIVATE hashers)
 
 target_include_directories(hashfile PUBLIC ../include)

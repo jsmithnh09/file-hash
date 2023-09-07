@@ -9,7 +9,8 @@
 * Disclaimer: This code is presented "as is" without any guarantees.
 * Details:    Generates crypto-secure bytes and version 4 UUID (GUID). 
 *             NOTE: This ought to use  Visual Studio or GNU. MinGW and
-*             Cygwin will cause issues...
+*             Cygwin will use Wincrypt, but that API may deprecate in
+*             the future...more of a detail about MinGW being outdated.
 *
 *********************************************************************/
 
@@ -25,7 +26,11 @@
         DWORD Bsize = NUM_UUID_BYTES * sizeof(uint8_t);
         NTSTATUS stat;
         HCRYPTPROV hCryptProv;
-        stat = CryptAcquireContext(&hCryptProv, NULL, "Microsoft Base Cryptographic Provider v1.0", PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
+        stat = CryptAcquireContext(&hCryptProv, 
+            NULL, 
+            "Microsoft Base Cryptographic Provider v1.0", 
+            PROV_RSA_FULL, 
+            CRYPT_VERIFYCONTEXT);
         if (!stat) {
             fprintf(stderr, "uuid: Internal Wincrypt failure.\n");
             free(buffer);
