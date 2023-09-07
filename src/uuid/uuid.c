@@ -16,7 +16,38 @@
 #if defined(__CYGWIN__)
     #error "Cygwin builds are not supported."
 #endif
-#if defined(_WIN32)
+#if defined(__MINGW32__)
+    // using the Wincrypt API since that's visible to MinGW.
+    #include <windows.h>
+    #include <Wincrypt.h>
+    uint8_t* win32_cryptrand(void) {
+        uint8_t *buffer = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
+        DWORD Bsize = NUM_UUID_BYTES * sizeof(uint8_t);
+        NTSTATUS stat;
+        HCRYPTPROV hCryptProv;
+        stat = CryptAcquireContext(&hCryptProv, NULL, "Microsoft Base Cryptographic Provider v1.0", PROV_RSA_FULL, CRYPT_VERIFYCONTEXT);
+        if (!stat) {
+            fprintf(stderr, "uuid: Internal Wincrypt failure.\n");
+            free(buffer);
+            exit(1);
+        }
+        stat = CryptGenRandom(hCryptProv, Bsize, (BYTE *)buffer);
+        if (!stat) {
+            fprintf(stderr, "uuid: Internal Wincrypt failure. Cannot generate random bytes.\n");
+            free(buffer);
+            exit(1);
+        }
+        stat = CryptReleaseContext(hCryptProv, 0);
+        if (!stat) {
+            fprintf(stderr, "uuid: Error during CryptReleaseContext.\n");
+            free(buffer);
+            exit(1);
+        }
+        return buffer;
+    }
+#endif
+#if defined(_WIN32) && !defined(__MINGW32__)
+    // using the more advanced BCrypt API here. MinGW can't seem to find the bcrypt library.
     #include <windows.h>
     #include <bcrypt.h>
     #ifdef _MSC_VER
@@ -41,7 +72,8 @@
         }
         return buffer;
     }
-#else
+#endif
+#if defined(__unix__)
     #include <sys/random.h>
     uint8_t* cryptrand(void) {
         ssize_t stat;

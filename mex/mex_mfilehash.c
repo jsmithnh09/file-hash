@@ -1,9 +1,8 @@
 #include "mex.h"
-#include "crc32.h"
-#include "sha1.h"
-#include "md5.h"
-#include "sha256.h"
-#include "common.h"
+#include "hashers/crc32.h"
+#include "hashers/sha1.h"
+#include "hashers/md5.h"
+#include "hashers/sha256.h"
 #include <string.h>
 #include <stdio.h>
 
