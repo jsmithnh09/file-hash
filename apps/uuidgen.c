@@ -4,6 +4,7 @@
 #include "uuid/uuid.h"
 #include "hashers/sha1.h"
 #include "hashers/md5.h"
+#include "version.h"
 
 /*****************************************************************
 * Filename: UUIDGEN
