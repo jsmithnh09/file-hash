@@ -30,6 +30,10 @@
 * Default, no args: UUIDGEN 4 1
 **********************************************************/
 int main(int argc, char *argv[]) {
+    if ((argc == 2) && (!strncmp(argv[1], "-v", 2) || !strncmp(argv[1], "--v", 3))) {
+        printf("file-hash: uuidgen v%s\n", FILE_HASH_VERSION);
+        return 0;
+    }
     if (argc == 3) {
         long numIds = 1;
         uint8_t vnum = 4;
