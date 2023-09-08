@@ -14,3 +14,11 @@ add_subdirectory(apps)
 
 # MATLAB specific "out-of-source" folder.
 # add_subdirectory(mex)
+
+# creating version header.
+add_custom_target(mkversion
+        ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/mkversion.cmake)
+
+# add version header dependency to the targets that print out the version.
+add_dependencies(uuidgen mkversion)
+add_dependencies(hashfile mkversion)
