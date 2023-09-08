@@ -12,6 +12,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
     char *uuid, *outbuf;
     uuid = uuid4();
     outbuf = mxCalloc(NUM_UUID_CHARS+1, sizeof(char));
+    size_t idx;
     for (idx = 0; idx < NUM_UUID_CHARS; idx++) {
         outbuf[idx] = uuid[idx];
     }
