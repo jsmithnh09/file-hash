@@ -4,6 +4,7 @@
 #include "hashers/md5.h"
 #include "hashers/sha1.h"
 #include "hashers/crc32.h"
+#include "version.h"
 
 /*********************************************************
 * Filename: hashfile
@@ -13,9 +14,13 @@
 **********************************************************/
 
 /*********************************************************
-* HASHFILE <FILENAME> [SHA256|MD5|SHA1|CRC32]
+* HASHFILE <FILENAME> [SHA256|MD5|SHA1|CRC32|-V|--VERSION]
 **********************************************************/
 int main(int argc, char *argv[]) {
+    if ((argc == 2) && (!strncmp(argv[1], "-v", 2) || !strncmp(argv[1], "--v", 3))) {
+        printf("file-hash: hashfile v%s\n", FILE_HASH_VERSION);
+        return 0;
+    }
     char *output;
     if (argc > 2) {
         if (!strncmp(argv[2], "md5", 3)) {
