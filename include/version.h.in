@@ -1,0 +1,11 @@
+/********************************************************
+ * VERSION.H contains version information for the project.
+ ********************************************************/
+
+#ifndef _FILE_HASH_VERSION_H_
+#define _FILE_HASH_VERSION_H_
+
+#define FILE_HASH_VERSION "@FILE_HASH_VERSION@"
+
+#endif
+
