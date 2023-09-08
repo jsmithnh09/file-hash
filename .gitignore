@@ -39,3 +39,6 @@ _deps
 
 # ignore the build directory.
 [Bb]uild/
+
+# ignoring generated config files (not excluding the template.)
+include/version.h
