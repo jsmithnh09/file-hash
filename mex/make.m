@@ -5,7 +5,6 @@ function make
   
   target = 'mex_mfilehash.c';
   rootdir = fileparts(fileparts(mfilename('fullpath')));
-  srcdir = fullfile(rootdir, 'src', 'hashers');
   files = {'sha256.c', 'md5.c', 'crc32.c', 'sha1.c'};
   
   % expand the filepath for each source file.
@@ -15,14 +14,24 @@ function make
   
   % perform the actual MEX compilation.
   fprintf(1, '#### Compiling MFILEHASH\n');
-  mex(target, ['-I', srcdir], files{:}, '-outdir', fullfile(rootdir, 'mex'));
+  mex(target, ['-I', fullfile(rootdir, 'include')], ...
+      files{:}, '-outdir', fullfile(rootdir, 'mex'));
   
   % now target the UUID portion.
-  target = 'mex_uuidgen.c';
-  srcdir = fullfile(rootdir, 'src', 'uuid');
-  files = {'uuid4.c'};
-  fprintf(1, '### Compiling UUIDGEN\n');
-  mex(target, ['-I', srcdir], files{:}, '-outdir', fullfile(rootdir, 'mex'));
+  target = 'mex_uuidrand.c';
+  files = {...
+      fullfile(rootdir, 'src', 'uuid', 'uuid.c'), ...
+      fullfile(rootdir, 'src', 'hashers', 'md5.c'), ...
+      fullfile(rootdir, 'src', 'hashers', 'sha1.c')};
+  
+  fprintf(1, '### Compiling UUIDRAND\n');
+  mex(target, ['-I', fullfile(rootdir, 'include')], ...
+      files{:}, '-outdir', fullfile(rootdir, 'mex'));
+  
+  % generate UUID-space MEX using the same files.
+  fprintf(1, '### Compiliing UUIDSPACE\n');
+  mex('mex_uuidspace.c', ['-I', fullfile(rootdir, 'include')], ...
+      files{:}, '-outdir', fullfile(rootdir, 'mex'));
 
 
   end
