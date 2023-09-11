@@ -7,7 +7,7 @@
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[])
 {
     if (nlhs != 1) {
-        mexErrMsgIdAndTxt("uuidgen:BadOutput", "Expected one string output.");
+        mexErrMsgIdAndTxt("uuidrand:BadOutput", "Expected one string output.");
     }
     char *uuid, *outbuf;
     uuid = uuid4();
