@@ -9,7 +9,7 @@ I've added an implementation of CRC32 where the polynomial table is pre-defined 
 For cleanup, I've added `atexit` methods in the event the hashing is interrupted to prevent open
 file handlers on abnormal termination.
 
-Additionally, there's a `uuidgen` executable that can be used for generating version 4 [Universal
+Additionally, there's a `uuidgen` executable that can be used for generating versions 3, 4, and 5 [Universal
 Unique Identifiers](https://en.wikipedia.org/wiki/Universally_unique_identifier). Visual Studio works with CMake, Linux and Apple still need to be tested.
 
 ## Testing
