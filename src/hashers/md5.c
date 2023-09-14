@@ -233,7 +233,6 @@ char* md5_file(const char* filename)
 	{
         sprintf(&fileprint[ind*2], "%02x", (unsigned int)buffer[ind]);
     }
-    fclose(fid);
     return fileprint;
 }
 
