@@ -34,11 +34,16 @@ int main(int argc, char *argv[]) {
     if ((argc == 2) && (!strncmp(argv[1], "-v", 2) || !strncmp(argv[1], "--v", 3))) {
         printf("file-hash: uuidgen v%s\n", FILE_HASH_VERSION);
         return 0;
+    } else if((argc == 2) && (!strncmp(argv[1], "-h", 2) || !strncmp(argv[1], "--help", 6))) {
+        printf("Usage\n\n\tuuidgen <version> [options]\n\tuuidgen 4 <num-ids>\n\tuuidgen 3 <seed-string>\n\tuuidgen 5 <seed-string>\n\n");
+        printf("Specify a version number (3 to 5) for the version of a UUID to generate.\nVersions 3 and 5 require a seed-string to hash with.\n"); 
+        printf("Version 4 uses crypto-secure random bytes to build the identifier.\n");
+        return 0;
     }
     if (argc == 3) {
         long numIds = 1;
-        uint8_t vnum = 4;
-        if (sscanf(argv[1], "%i", (uint8_t *)&vnum) == -1) {
+        unsigned int vnum = 4;
+        if (sscanf(argv[1], "%d", &vnum) == -1) {
             fprintf(stderr, "Cannot parse UUID version number.\n");
             exit(1);
         }
