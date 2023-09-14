@@ -83,7 +83,7 @@
     uint8_t* cryptrand(void) {
         ssize_t stat;
         uint8_t *buffer = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
-        stat = getrandom((void)buffer, (size_t)NUM_UUID_BYTES, GRND_NONBLOCK);
+        stat = getrandom((void *)buffer, (size_t)NUM_UUID_BYTES, GRND_NONBLOCK);
         if (stat == -1) {
             fprintf(stderr, "Internal Failure.\n");
             exit(1);
