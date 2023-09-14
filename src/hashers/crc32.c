@@ -124,7 +124,6 @@ char* crc32_file(const char* filename)
     // mask the final value.
     crc32_final(&ctx);
     sprintf(fileprint, "%08x", ctx.state);
-    fclose(fid);
     return fileprint;
 }
 
