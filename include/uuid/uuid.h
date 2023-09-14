@@ -30,7 +30,7 @@
 #ifdef _WIN32
     uint8_t* win32_cryptrand(void);
 #else
-    uint8_t cryptrand(void);
+    uint8_t* cryptrand(void);
 #endif
 char* bin2uuid(uint8_t *buffer);
 uint8_t* uuid2bin(const char* uuid);
