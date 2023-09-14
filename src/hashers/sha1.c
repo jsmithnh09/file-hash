@@ -190,7 +190,6 @@ char* sha1_file(const char* filename)
     for(ind = 0; ind < SHA1_BLOCK_SIZE; ind++) {
         sprintf(&fileprint[ind*2], "%02x", (unsigned int)buffer[ind]);
     }
-    fclose(fid);
     return fileprint;
 }
 
