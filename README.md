@@ -1,4 +1,6 @@
-# File-hash
+File-hash
+=========
+[![Build](https://github.com/jsmithnh09/file-hash/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/jsmithnh09/file-hash/actions/workflows/cmake-multi-platform.yml)
 
 ## About
 This is based on the work by Brad Conte with no cross-licensing, available at
