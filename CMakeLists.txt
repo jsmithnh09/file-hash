@@ -6,6 +6,8 @@ project(file-hash
         LANGUAGES C
         )
 
+enable_testing()
+
 # "True" source files for the C-file entry points and static library files.
 add_subdirectory(src)
 
@@ -22,3 +24,6 @@ add_custom_target(mkversion
 # add version header dependency to the targets that print out the version.
 add_dependencies(uuidgen mkversion)
 add_dependencies(hashfile mkversion)
+
+# add tests for CMake.
+add_subdirectory(test)

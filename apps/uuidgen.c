@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
         return 0;
     }
     if (argc == 3) {
-        long numIds = 1;
+        unsigned long numIds = 1;
         unsigned int vnum = 4;
         if (sscanf(argv[1], "%d", &vnum) == -1) {
             fprintf(stderr, "Cannot parse UUID version number.\n");
@@ -55,7 +55,7 @@ int main(int argc, char *argv[]) {
                 free(uuid);
                 return 0;
             case 4:
-                if (sscanf(argv[2], "%ld", (long *)&numIds) == -1) {
+                if (sscanf(argv[2], "%lu", &numIds) == -1) {
                     fprintf(stderr, "Cannot parse # of version-4 UUIDs to generate.\n");
                     exit(1);
                 }

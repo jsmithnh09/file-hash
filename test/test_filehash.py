@@ -12,7 +12,7 @@ with open(fpath, "r") as fid:
 # run the hashfile process and check the outputs.
 (root_dir, _) = op.split(os.getcwd())
 infile = op.join(root_dir, "test", "test.txt")
-exepath = op.join(root_dir, "build", "hashfile.exe")
+exepath = op.join(root_dir, "bin", "hashfile.exe")
 
 # pull the byte output into a string.
 for hasher in data.keys():
