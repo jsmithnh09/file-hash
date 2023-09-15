@@ -55,11 +55,11 @@ int main(int argc, char *argv[]) {
                 free(uuid);
                 return 0;
             case 4:
-                long iterIdx;
                 if (sscanf(argv[2], "%ld", (long *)&numIds) == -1) {
                     fprintf(stderr, "Cannot parse # of version-4 UUIDs to generate.\n");
                     exit(1);
                 }
+                unsigned int iterIdx;
                 for (iterIdx = 0; iterIdx < numIds; iterIdx++) {
                     uuid = uuid4();
                     printf("%.36s\n", uuid);
