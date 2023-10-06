@@ -21,9 +21,9 @@
     // using the Wincrypt API since that's visible to MinGW.
     #include <windows.h>
     #include <Wincrypt.h>
-    uint8_t* win32_cryptrand(void) {
-        uint8_t *buffer = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
-        DWORD Bsize = NUM_UUID_BYTES * sizeof(uint8_t);
+    uint8_t* win32_cryptrand(size_t numBytes) {
+        uint8_t *buffer = calloc(numBytes, sizeof(uint8_t));
+        DWORD Bsize = numBytes * sizeof(uint8_t);
         NTSTATUS stat;
         HCRYPTPROV hCryptProv;
         stat = CryptAcquireContext(&hCryptProv, 
@@ -65,9 +65,9 @@
         #define BCRYPT_USE_SYSTEM_PREFERRED_RNG 0x00000002
     #endif
 
-    uint8_t* win32_cryptrand(void) {
-        uint8_t *buffer = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
-        DWORD Bsize = NUM_UUID_BYTES * sizeof(uint8_t);
+    uint8_t* win32_cryptrand(size_t numBytes) {
+        uint8_t *buffer = calloc(numBytes, sizeof(uint8_t));
+        DWORD Bsize = numBytes * sizeof(uint8_t);
         NTSTATUS stat;
         memset(buffer, 0, Bsize);
         stat = BCryptGenRandom(NULL, buffer, Bsize, BCRYPT_USE_SYSTEM_PREFERRED_RNG);
@@ -80,10 +80,10 @@
 #endif
 #if defined(__unix__)
     #include <sys/random.h>
-    uint8_t* cryptrand(void) {
+    uint8_t* cryptrand(size_t numBytes) {
         ssize_t stat;
-        uint8_t *buffer = calloc(NUM_UUID_BYTES, sizeof(uint8_t));
-        stat = getrandom((void *)buffer, (size_t)NUM_UUID_BYTES, GRND_NONBLOCK);
+        uint8_t *buffer = calloc(numBytes, sizeof(uint8_t));
+        stat = getrandom((void *)buffer, (size_t)numBytes, GRND_NONBLOCK);
         if (stat == -1) {
             fprintf(stderr, "Internal Failure.\n");
             exit(1);
@@ -219,9 +219,9 @@ char* uuid4(void) {
     uint8_t *buffer;
     char *uuidstr;
     #ifdef _WIN32
-        buffer = win32_cryptrand();
+        buffer = win32_cryptrand((size_t)NUM_UUID_BYTES);
     #else
-        buffer = cryptrand();
+        buffer = cryptrand((size_t)NUM_UUID_BYTES);
     #endif
     /*
      * 

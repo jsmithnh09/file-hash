@@ -28,9 +28,9 @@
 
 /*********************** FUNCTION DECLARATIONS **********************/
 #ifdef _WIN32
-    uint8_t* win32_cryptrand(void);
+    uint8_t* win32_cryptrand(size_t numbytes);
 #else
-    uint8_t* cryptrand(void);
+    uint8_t* cryptrand(size_t numbytes);
 #endif
 char* bin2uuid(uint8_t *buffer);
 uint8_t* uuid2bin(const char* uuid);
