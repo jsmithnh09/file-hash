@@ -54,12 +54,19 @@
     test_uuidstring(STR_UUID_X500, UUID_TEST_V5_X500, 5);
 
     // for version 4, we want to test previous UUIDs don't produce the same UUID.
+    char *uuidPrev, *uuidNew;
     int iterIdx = 0;
     while(iterIdx < 1000) {
-        if (!strncmp(uuid4(), uuid4(), NUM_UUID_CHARS)) {
+		uuidPrev = uuid4();
+		uuidNew = uuid4();
+        if (!strncmp(uuidPrev, uuidNew, NUM_UUID_CHARS)) {
             fprintf(stderr, "version 4 FAILURE: recurrent UUIDs generated.\n");
+			free(uuidPrev);
+			free(uuidNew);
             exit(1);
         } else {
+			free(uuidPrev);
+			free(uuidNew);
             iterIdx++;
         }
     }
