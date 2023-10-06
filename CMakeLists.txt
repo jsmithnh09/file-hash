@@ -24,6 +24,7 @@ add_custom_target(mkversion
 # add version header dependency to the targets that print out the version.
 add_dependencies(uuidgen mkversion)
 add_dependencies(hashfile mkversion)
+add_dependencies(cryptrand mkversion)
 
 # add tests for CMake.
 add_subdirectory(test)
