@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "blowfish.h"
+#include <stdint.h>
 
 /************************************************************
  * BLOWFISH testing should provide a double value 
@@ -10,8 +11,8 @@
 
 int main(int argc, char *argv[]) {
     
-    unsigned long L = 1;
-    unsigned long R = 2;
+    uint32_t L = 1;
+    uint32_t R = 2;
 
     BLOWFISH_CTX *ctx = (BLOWFISH_CTX*)malloc(sizeof(BLOWFISH_CTX));
     Blowfish_Init(ctx, "TESTKEY", 7);
