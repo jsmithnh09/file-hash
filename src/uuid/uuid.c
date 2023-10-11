@@ -21,7 +21,7 @@
     // using the Wincrypt API since that's visible to MinGW.
     #include <windows.h>
     #include <Wincrypt.h>
-    uint8_t* win32_cryptrand(size_t numBytes) {
+    uint8_t* cryptrand(size_t numBytes) {
         uint8_t *buffer = calloc(numBytes, sizeof(uint8_t));
         DWORD Bsize = numBytes * sizeof(uint8_t);
         NTSTATUS stat;
@@ -65,7 +65,7 @@
         #define BCRYPT_USE_SYSTEM_PREFERRED_RNG 0x00000002
     #endif
 
-    uint8_t* win32_cryptrand(size_t numBytes) {
+    uint8_t* cryptrand(size_t numBytes) {
         uint8_t *buffer = calloc(numBytes, sizeof(uint8_t));
         DWORD Bsize = numBytes * sizeof(uint8_t);
         NTSTATUS stat;
@@ -218,11 +218,7 @@ char* uuid4(void) {
     // generate the crypto-secure bytes.
     uint8_t *buffer;
     char *uuidstr;
-    #ifdef _WIN32
-        buffer = win32_cryptrand((size_t)NUM_UUID_BYTES);
-    #else
-        buffer = cryptrand((size_t)NUM_UUID_BYTES);
-    #endif
+    buffer = cryptrand((size_t)NUM_UUID_BYTES);
     /*
      * 
      * from the Julia stdlib:

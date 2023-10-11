@@ -27,11 +27,8 @@
 #define STR_UUID_X500   "6ba7b814-9dad-11d1-80b4-00c04fd430c8"
 
 /*********************** FUNCTION DECLARATIONS **********************/
-#ifdef _WIN32
-    uint8_t* win32_cryptrand(size_t numbytes);
-#else
-    uint8_t* cryptrand(size_t numbytes);
-#endif
+
+uint8_t* cryptrand(size_t numbytes);
 char* bin2uuid(uint8_t *buffer);
 uint8_t* uuid2bin(const char* uuid);
 char* uuid3(const char* namespace, const char* instr);

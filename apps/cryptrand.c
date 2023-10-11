@@ -24,11 +24,7 @@
         }
     }
     uint8_t *buff;
-    #if defined(_WIN32)
-        buff = win32_cryptrand((size_t)numbytes);
-    #else
-        buff = cryptrand((size_t)numbytes);
-    #endif
+    buff = cryptrand((size_t)numbytes);
     int iterIdx;
     printf("$:");
     for(iterIdx = 0; iterIdx < (int)numbytes; iterIdx++) {
