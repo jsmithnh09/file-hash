@@ -14,7 +14,7 @@ file handlers on abnormal termination.
 Additionally, there's a `uuidgen` executable that can be used for generating versions 3, 4, and 5 [Universal
 Unique Identifiers](https://en.wikipedia.org/wiki/Universally_unique_identifier). Visual Studio works with CMake, Linux and Apple still need to be tested.
 
-For encrypting/decrypting data, the [Blowfish algorithm](https://en.wikipedia.org/wiki/Blowfish_(cipher)) has been added. This suits well for 32-bit words, (or in MATLAB), a single double.
+For encrypting/decrypting data, the [Blowfish algorithm](https://en.wikipedia.org/wiki/Blowfish_(cipher)) has been added.
 
 ## Testing
 To run MATLAB tests, the `test_filehash.m` class can be used as a test case alongside the `file_hash.py`
