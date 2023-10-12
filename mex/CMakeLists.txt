@@ -25,6 +25,10 @@ target_include_directories(mex_blowfish PUBLIC ../src/blowfish)
 
 # adding install to a "toolbox" folder for artifacts.
 install(TARGETS mex_uuidrand mex_mfilehash mex_uuidspace mex_cryptrand mex_blowfish
-    RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/toolbox)
+    RUNTIME DESTINATION ${CMAKE_SOURCE_DIR}/toolbox
+    PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE 
+                GROUP_READ GROUP_WRITE GROUP_EXECUTE
+                WORLD_READ WORLD_WRITE WORLD_EXECUTE)
+
 install(FILES mfilehash.m cryptrand.m uuidrand.m uuidspace.m Contents.m 
     DESTINATION ${CMAKE_SOURCE_DIR}/toolbox)
