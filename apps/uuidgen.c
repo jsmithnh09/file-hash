@@ -12,7 +12,7 @@
 *
 *   uuidgen -v <version-number> -n <number-of-ids>
 *
-* Specify a UUID version number (3-5.) Specify the number of IDs
+* Specify a UUID version number (3-5, 7) Specify the number of IDs
 * to generate of that specific verison.
 *
 * Options
@@ -26,6 +26,7 @@
 *   UUIDGEN 3 <"INPUT-STR"> [NAMESPACE-ID <0-3>]
 *   UUIDGEN 4 <NUM-IDs>
 *   UUIDGEN 5 <"INPUT-STR"> [NAMESPACE-ID <0-3>]
+*   UUIDGEN 7 <NUM-IDs>
 *
 * UUIDGEN versions 3 and 5 accept an optional Namespace ID, where:
 *   0 -- DNS namespace
@@ -40,9 +41,9 @@ int main(int argc, char *argv[]) {
         printf("file-hash: uuidgen v%s\n", FILE_HASH_VERSION);
         return 0;
     } else if((argc == 2) && (!strncmp(argv[1], "-h", 2) || !strncmp(argv[1], "--help", 6))) {
-        printf("Usage\n\n\tuuidgen <version> [options]\n\tuuidgen 4 <num-ids>\n\tuuidgen 3 <seed-string>\n\tuuidgen 5 <seed-string>\n\n");
+        printf("Usage\n\n\tuuidgen <version> [options]\n\tuuidgen 4 <num-ids>\n\tuuidgen 3 <seed-string>\n\tuuidgen 5 <seed-string>\n\tuuidgen 7 <num-ids>\n\n");
         printf("Specify a version number (3 to 5) for the version of a UUID to generate.\nVersions 3 and 5 require a seed-string to hash with.\n"); 
-        printf("Version 4 uses crypto-secure random bytes to build the identifier.\n");
+        printf("Versions 4 and 7 uses crypto-secure random bytes to build the identifier.\n");
         return 0;
     }
     if (argc > 2) {
@@ -83,13 +84,18 @@ int main(int argc, char *argv[]) {
                 free(uuid);
                 return 0;
             case 4:
+            case 7:
                 if (sscanf(argv[2], "%lu", &numIds) == -1) {
-                    fprintf(stderr, "Cannot parse # of version-4 UUIDs to generate.\n");
+                    fprintf(stderr, "Cannot parse # of UUIDs to generate.\n");
                     exit(1);
                 }
                 unsigned int iterIdx;
                 for (iterIdx = 0; iterIdx < numIds; iterIdx++) {
-                    uuid = uuid4();
+                    if (vnum == 4) {
+                        uuid = uuid4();
+                    } else {
+                        uuid = uuid7();
+                    }
                     printf("%.36s\n", uuid);
                     free(uuid);
                 }

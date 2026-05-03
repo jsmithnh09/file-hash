@@ -51,6 +51,17 @@
         return buffer;
     }
 #endif
+#if defined(_WIN32)
+    // only need windows API for the time extraction, not compiler dependent.
+    #include <windows.h>
+    #include <stdint.h>
+    static void gettime(uint64_t *ms) {
+	    FILETIME ft;
+	    GetSystemTimePreciseAsFileTime(&ft);
+	    uint64_t full = ((uint64_t)ft.dwHighDateTime << 32) | ft.dwLowDateTime;
+	    *ms = (uint64_t)(full / 1000) - 11644473600000ULL; // Windows epoch time (11,644,473,600,000 ms.)
+    }
+#endif
 #if defined(_WIN32) && !defined(__MINGW32__)
     // using the more advanced BCrypt API here. MinGW can't seem to find the bcrypt library.
     #include <windows.h>
@@ -89,6 +100,11 @@
             exit(1);
         }
         return buffer;
+    }
+    static void gettime(uint64_t *ms) {
+	    struct timeval tv;
+	    gettimeofday(&tv, NULL);
+	    *ms = (uint64_t)tv.tv_sec * 1000 + (tv.tv_usec / 1000); // milliseconds
     }
 #endif
 
@@ -232,5 +248,30 @@ char* uuid4(void) {
     buffer[8] = ((buffer[8] & 0x3f) | 0x80);
     uuidstr = bin2uuid(buffer);
     free(buffer);
+    return uuidstr;
+}
+
+char* uuid7(void) {
+    uint64_t time;
+    gettime(&time);
+
+    uint8_t *buffer;
+    char *uuidstr;
+    buffer = cryptrand((size_t)NUM_UUID_BYTES);
+    
+    /* packing timestamp into bits. */
+    buffer[0] = (time >> 40) & 0xff;
+    buffer[1] = (time >> 32) & 0xff;
+    buffer[2] = (time >> 24) & 0xff;
+    buffer[3] = (time >> 16) & 0xff;
+    buffer[4] = (time >> 8)  & 0xff;
+    buffer[5] = time         & 0xff;
+
+    /* Set version 7  (bits 48-51) */
+    buffer[6] = (buffer[6] & 0x0f) | 0x70;
+
+    /* Set variant to RFC 4122 */
+    buffer[8] = (buffer[8] & 0x3f) | 0x80;
+    uuidstr = bin2uuid(buffer);
     return uuidstr;
 }

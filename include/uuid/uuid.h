@@ -15,6 +15,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <sys/time.h>
 
 /****************************** MACROS ******************************/
 #define NUM_UUID_BYTES  16
@@ -34,6 +36,7 @@ uint8_t* uuid2bin(const char* uuid);
 char* uuid3(const char* namespace, const char* instr);
 char* uuid4(void);
 char* uuid5(const char* namespace, const char* instr);
+char* uuid7(void);
 
 
 #endif
